@@ -2,9 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#16233A">
-<title>تقارير المقاولين اليومية</title>
+<title>تقارير المقاولين</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -14,234 +14,173 @@
 <style>
 :root{
   --paper:#E9EDF1; --surface:#FFFFFF; --ink:#16233A; --muted:#5E6A7D; --line:#D2D9E2;
-  --ok:#1D7A52; --ok-bg:#E3F2EA; --bad:#B8342A; --bad-bg:#FBE9E6; --wait:#7C8698; --wait-bg:#EEF0F4;
-  --hiviz:#EDB21C; --hiviz-bg:#FFF6DA; --focus:#2F6FDB;
-  --r-lg:14px; --r-sm:8px;
-  --font:"IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
-  color-scheme:light;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  --me:#DDE6F3; --ok:#1D7A52; --ok-bg:#E3F2EA; --bad:#B8342A; --bad-bg:#FBE9E6; --hiviz:#EDB21C; --hiviz-bg:#FFF6DA; --focus:#2F6FDB;
+  --font:"IBM Plex Sans Arabic","Segoe UI",Tahoma,system-ui,sans-serif; color-scheme:light;
 }
-@media (prefers-color-scheme:dark){ :root{
-  --paper:#0E1522; --surface:#172035; --ink:#E6EBF2; --muted:#9AA6B8; --line:#2A3651;
-  --ok:#4CC08A; --ok-bg:#153227; --bad:#F07A6C; --bad-bg:#3A1B19; --wait:#8D98AB; --wait-bg:#1D2740;
-  --hiviz:#F2C24A; --hiviz-bg:#3A3015; --focus:#7FA8F5; color-scheme:dark; } }
-*,*::before,*::after{box-sizing:inherit}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#0E1522; --surface:#172035; --ink:#E6EBF2; --muted:#9AA6B8; --line:#2A3651; --me:#22314F;
+  --ok:#4CC08A; --ok-bg:#153227; --bad:#F07A6C; --bad-bg:#3A1B19; --hiviz:#F2C24A; --hiviz-bg:#3A3015; --focus:#7FA8F5; color-scheme:dark;}}
+*,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
-html,body{margin:0}
+html,body{margin:0;height:100%}
 body{background:var(--paper);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.num,b{font-variant-numeric:tabular-nums}
+b,.meta,.dv{font-variant-numeric:tabular-nums}
 
+.app{height:100dvh;display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px)}
 /* header */
-.top{position:sticky;top:0;z-index:5;background:var(--ink);color:#fff;padding:12px 16px 0}
-.top-in{max-width:1180px;margin:0 auto}
-.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand h1{font-size:1.05rem;font-weight:600;margin:0;opacity:.85}
-.icons{display:flex;gap:4px}
-.ibtn{background:transparent;border:0;color:#fff;padding:8px 10px;border-radius:var(--r-sm);cursor:pointer;font-size:.95rem}
-.ibtn:hover{background:rgba(255,255,255,.1)}
-.when{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:10px 0 12px}
-.date-wrap{display:flex;flex-direction:column}
-#dateLabel{font-size:1.45rem;font-weight:700;line-height:1.2}
-#date{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:var(--r-sm);padding:4px 8px;color-scheme:dark;width:max-content;margin-top:4px}
-#shifts{display:flex;background:rgba(255,255,255,.08);border-radius:10px;padding:3px}
-.top .seg{background:transparent;border:0;color:#fff;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:500}
-.top .seg.on{background:#fff;color:var(--ink)}
-#sessionState{font-size:.85rem;opacity:.8}
-.link{background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer;padding:0 4px}
+.top{background:#16233A;color:#fff;padding:8px 14px 10px}
+.top-in{max-width:820px;margin:0 auto}
+.r1{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.r1 h1{margin:0;font-size:1rem;font-weight:600;opacity:.85}
+.ib{background:transparent;border:0;color:#fff;padding:6px 9px;border-radius:8px;cursor:pointer;font-size:.92rem}
+.ib:hover{background:rgba(255,255,255,.1)}
+.r2{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:4px}
+.datebtn{position:relative;display:flex;align-items:center;gap:6px;font-size:1.15rem;font-weight:700;cursor:pointer}
+.datebtn input{position:absolute;inset:0;opacity:0;cursor:pointer;color-scheme:dark}
+.datebtn::after{content:"▾";font-size:.8rem;opacity:.7}
+#shifts{display:flex;background:rgba(255,255,255,.1);border-radius:10px;padding:3px}
+.top .seg{background:transparent;border:0;color:#fff;padding:4px 14px;border-radius:8px;cursor:pointer;font-weight:500}
+.top .seg.on{background:#fff;color:#16233A}
+#counter{margin-inline-start:auto;background:rgba(255,255,255,.1);border:0;color:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.9rem}
+.cdot{opacity:.8;margin-inline-start:4px}
 
-/* roster — the signature strip: one tick per contractor */
-.roster-wrap{margin:0 -16px;padding:0 16px 12px;background:var(--ink)}
-#roster{display:grid;grid-template-columns:repeat(17,1fr);gap:3px;max-width:1180px;margin:0 auto}
-.tick{height:22px;border:0;border-radius:3px;cursor:pointer;padding:0;transition:transform .15s}
-.tick:hover{transform:scaleY(1.25)}
-.t-complete{background:var(--ok)} .t-incomplete{background:var(--bad)} .t-pending{background:rgba(255,255,255,.18)}
-@media (prefers-color-scheme:dark){ .t-complete{background:#2E9A68} .t-incomplete{background:#D2493C} }
+/* chat */
+#chat{overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 20px}
+#chat>*{max-width:820px;margin-inline:auto}
+.intro{margin-top:12vh;text-align:center;color:var(--muted)}
+.intro-t{font-size:1.2rem;font-weight:600;color:var(--ink);margin:0 0 6px}
+.intro-s{max-width:36em;margin:0 auto 14px;font-size:.92rem}
+.me{display:flex;flex-direction:column;align-items:flex-start;margin:18px 0 8px}
+.bubble-me{background:var(--me);border-radius:14px 14px 14px 4px;padding:8px 12px;white-space:pre-wrap;max-width:88%;font-size:.9rem;overflow-wrap:anywhere}
+.bubble-me.clamp{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.me .t{font-size:.72rem;color:var(--muted);margin-top:2px}
+.link{background:none;border:0;color:var(--focus);cursor:pointer;padding:2px 0;font-size:.82rem}
+.bot{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.bot-note{margin:0;color:var(--muted);font-size:.88rem}
+.bot-mini{margin:0;padding:6px 12px;background:var(--surface);border-radius:10px;font-size:.9rem;border:1px solid var(--line)}
+.muted{color:var(--muted)} .warnc{color:#9A6B00}
+@media (prefers-color-scheme:dark){.warnc{color:var(--hiviz)}}
+.warn{margin:0;background:var(--hiviz-bg);border-inline-start:4px solid var(--hiviz);padding:6px 10px;border-radius:6px;font-size:.88rem}
 
-main{max-width:1180px;margin:0 auto;padding:14px 16px 110px}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
-#tally{display:flex;gap:6px;flex-wrap:wrap}
-.tf{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.9rem}
-.tf.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-.search{flex:1 1 180px;min-width:150px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:8px 12px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 16px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:500;text-decoration:none;color:var(--ink)}
-.btn:hover{border-color:var(--muted)}
-.btn.primary{background:var(--ink);color:var(--surface);border-color:var(--ink)}
-@media (prefers-color-scheme:dark){ .btn.primary{background:#E6EBF2;color:#0E1522} }
-.btn.ghost{background:transparent}
-.btn.sm{min-height:38px;padding:4px 12px;font-size:.9rem}
-.btn.danger{color:var(--bad)}
-.btn.big{min-height:52px;font-size:1.05rem;padding:8px 22px}
-
-/* groups */
-.group{margin-top:22px}
-.group-title{display:flex;align-items:baseline;justify-content:space-between;font-size:1rem;font-weight:600;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
-.g-complete .group-title{border-color:var(--ok)} .g-incomplete .group-title{border-color:var(--bad)}
-.count{color:var(--muted);font-weight:500}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;align-items:start}
-.card{background:var(--surface);border-radius:var(--r-lg);padding:14px 16px 10px;border:1px solid var(--line);border-inline-start:6px solid var(--ok)}
+.card{background:var(--surface);border:1px solid var(--line);border-inline-start:5px solid var(--ok);border-radius:14px;padding:10px 14px 6px}
 .card.s-incomplete{border-inline-start-color:var(--bad)}
-.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.card-h h3{margin:0;font-size:1.15rem}
-.time{font-size:.78rem;color:var(--muted);white-space:nowrap}
-.reasons{margin:2px 0 6px;color:var(--bad);font-size:.88rem;font-weight:500}
-.line{margin:8px 0 4px;font-weight:500}
-.line.ok{color:var(--ok)} .line.bad{color:var(--bad)} .line.muted{color:var(--muted);font-weight:400}
-.chips{list-style:none;padding:0;margin:4px 0 8px;display:flex;flex-wrap:wrap;gap:6px}
-.chip{background:var(--bad-bg);color:var(--bad);border-radius:6px;padding:2px 9px;font-size:.88rem}
-.chip b{margin-inline-end:4px}
-.chip small{opacity:.8;margin-inline-start:4px}
-.more summary{cursor:pointer;color:var(--bad);font-size:.88rem;padding:2px 6px}
-.mats{width:100%;border-collapse:collapse;margin:8px 0;font-size:.9rem}
-.mats caption{text-align:start;font-weight:600;padding-bottom:4px}
-.mats td,.mats th{padding:4px 2px;border-top:1px solid var(--line);text-align:start;font-weight:400}
-.mats td:first-child{width:1.6em}
-.mats .num{text-align:end;white-space:nowrap}
-.mats tr.bad th,.mats tr.bad .num{color:var(--bad)}
-.notes{background:var(--paper);border-radius:var(--r-sm);padding:6px 10px;font-size:.9rem;margin:8px 0}
-.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
-.thumb{width:62px;height:62px;border-radius:6px;overflow:hidden;border:1px solid var(--line);padding:0;cursor:pointer;background:var(--paper)}
-.thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.thumb.file{font-size:1.3rem;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.thumb.file span{font-size:.55rem;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.card-f{display:flex;gap:6px;justify-content:flex-end;border-top:1px solid var(--line);padding-top:8px;margin-top:6px}
-.pending-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
-.prow .btn{white-space:nowrap}
-.prow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--wait-bg);border-radius:var(--r-sm);padding:6px 6px 6px 12px;padding-inline-start:12px}
-.pname{font-weight:500}
-.flash{animation:flash 2s ease-out}
-@keyframes flash{0%{box-shadow:0 0 0 4px var(--hiviz)}100%{box-shadow:0 0 0 0 transparent}}
-.empty{color:var(--muted);text-align:center;padding:40px 10px}
-body.readonly [data-act="paste"],body.readonly [data-act="edit"],body.readonly [data-act="reset"],body.readonly [data-act="pasteAny"]{display:none}
+.card.ask{border-inline-start-color:var(--hiviz)}
+.ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ch h3{margin:0;font-size:1.1rem}
+.meta{font-size:.75rem;color:var(--muted);white-space:nowrap}
+.linebox{display:flex;gap:6px;align-items:flex-start;background:var(--paper);border-radius:8px;padding:6px 10px;margin:8px 0}
+.line{margin:0;flex:1;font-size:.88rem;overflow-wrap:anywhere}
+.line-prev{background:var(--paper);border-radius:8px;padding:6px 10px;font-size:.85rem;margin:6px 0;overflow-wrap:anywhere}
+.icon-btn{border:0;background:transparent;cursor:pointer;padding:2px 4px;font-size:1rem;border-radius:6px}
+.icon-btn:hover{background:var(--line)}
+.mats{width:100%;border-collapse:collapse;font-size:.92rem;margin:4px 0}
+.mats th,.mats td{padding:5px 2px;border-top:1px solid var(--line);text-align:start;font-weight:400}
+.mats tr:first-child th,.mats tr:first-child td{border-top:0}
+.mats .ic{width:1.7em}
+.mats .dv{text-align:end}
+.mats tr.st-missing th,.mats tr.st-missing .dv,.mats tr.st-nophoto .dv,.mats tr.st-flagged .dv,.mats tr.st-none:not(.dim) .dv{color:var(--bad)}
+.mats tr.dim{color:var(--muted)}
+.sf{margin:8px 0 4px;font-weight:500;font-size:.95rem}
+.sf.ok{color:var(--ok)} .sf.bad{color:var(--bad)} .sf.muted{font-weight:400;font-size:.88rem}
+.chips{list-style:none;padding:0;margin:4px 0 6px;display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:var(--bad-bg);color:var(--bad);border-radius:6px;padding:1px 8px;font-size:.85rem}
+.chip b{margin-inline-end:3px} .chip small{opacity:.8;margin-inline-start:3px}
+.rev{background:var(--hiviz-bg);border-radius:6px;padding:4px 10px;font-size:.85rem;margin:6px 0}
+.issues{list-style:none;padding:0;margin:6px 0;color:var(--bad);font-size:.92rem}
+.notes{background:var(--paper);border-radius:8px;padding:5px 10px;font-size:.88rem;margin:6px 0}
+details.um,details.more{margin:6px 0;font-size:.88rem}
+details.um summary,details.more summary{cursor:pointer;color:var(--muted);padding:2px 0}
+details.um ul{margin:4px 0;padding-inline-start:18px;color:var(--muted)}
+.cf{display:flex;justify-content:flex-end;gap:4px;border-top:1px solid var(--line);margin-top:6px;padding-top:4px}
+.flash{animation:fl 1.8s ease-out}
+@keyframes fl{0%{box-shadow:0 0 0 4px var(--hiviz)}100%{box-shadow:0 0 0 0 transparent}}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sel{flex:1;min-width:160px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--surface)}
 
-/* bottom bar */
-.bar{position:fixed;inset-inline:0;bottom:0;z-index:4;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
-.bar-in{max-width:1180px;margin:0 auto;display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
-.bar-in .grp{display:flex;gap:8px}
+/* composer */
+.composer{background:var(--surface);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+.composer-in{max-width:820px;margin:0 auto;display:flex;gap:8px;align-items:flex-end}
+#compose{flex:1;resize:none;border:1px solid var(--line);border-radius:20px;padding:9px 14px;background:var(--paper);min-height:44px;max-height:160px;line-height:1.45}
+.send{width:44px;height:44px;border-radius:50%;border:0;background:#16233A;color:#fff;cursor:pointer;font-size:1.1rem;flex:none}
+.send{transform:scaleX(-1)}
+.send:disabled{opacity:.35;cursor:default}
+@media (prefers-color-scheme:dark){.send{background:#E6EBF2;color:#0E1522}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:6px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:500;text-decoration:none;color:var(--ink)}
+.btn.primary{background:#16233A;color:#fff;border-color:#16233A}
+@media (prefers-color-scheme:dark){.btn.primary{background:#E6EBF2;color:#0E1522;border-color:#E6EBF2}}
+.btn.ghost{background:transparent}
+.btn.sm{min-height:36px;padding:3px 10px;font-size:.88rem}
+.btn.danger{color:var(--bad)}
+.sumbtn{flex:none;min-height:44px;border-radius:22px}
 
 /* sheet */
-dialog.sheet{border:0;padding:0;border-radius:var(--r-lg);background:var(--surface);color:var(--ink);width:min(560px,100vw - 24px);max-height:min(88vh,100%);overflow:hidden}
-dialog.sheet.wide{width:min(760px,100vw - 24px)}
+dialog.sheet{border:0;padding:0;border-radius:16px;background:var(--surface);color:var(--ink);width:min(540px,calc(100vw - 24px));max-height:88vh;overflow:hidden}
+dialog.sheet.wide{width:min(720px,calc(100vw - 24px))}
 dialog.sheet::backdrop{background:rgba(10,16,28,.55)}
-dialog.sheet.drop{outline:3px dashed var(--focus);outline-offset:-8px}
-@media (max-width:640px){
-  dialog.sheet,dialog.sheet.wide{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:var(--r-lg) var(--r-lg) 0 0;max-height:92vh}
-}
-#sheetBody{padding:18px 18px 0;overflow:auto;max-height:inherit}
+@media (max-width:640px){dialog.sheet,dialog.sheet.wide{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:16px 16px 0 0;max-height:92vh}}
+#sheetBody{padding:16px 16px 0;overflow:auto;max-height:inherit}
 .x{position:absolute;top:10px;inset-inline-end:10px;z-index:2;border:0;background:var(--paper);width:36px;height:36px;border-radius:50%;cursor:pointer}
-.sh-title{margin:0 0 8px;font-size:1.2rem;padding-inline-end:40px}
-.hint{color:var(--muted);font-size:.87rem;margin:4px 0 10px}
-.raw{width:100%;border:1px solid var(--line);border-radius:var(--r-sm);padding:10px;background:var(--paper);resize:vertical;min-height:200px}
-.row{display:flex;flex-wrap:wrap}.gap{gap:8px;margin:10px 0}
-.field{display:flex;flex-direction:column;gap:4px;margin:10px 0}
-.field span{font-weight:500;font-size:.9rem}
-.field select,.field input,#notes{border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 10px;background:var(--surface);width:100%}
-.okc{color:var(--ok)} .warnc{color:#9A6B00}
-@media (prefers-color-scheme:dark){ .warnc{color:var(--hiviz)} }
-.warn{background:var(--hiviz-bg);border-inline-start:4px solid var(--hiviz);padding:6px 10px;border-radius:6px;margin:6px 0;font-size:.9rem}
-.verdict{border-radius:var(--r-sm);padding:10px 12px;margin:10px 0;font-weight:500}
-.v-complete{background:var(--ok-bg);color:var(--ok)} .v-incomplete{background:var(--bad-bg);color:var(--bad)} .v-none{background:var(--wait-bg);color:var(--muted)}
-.diff{border:1px dashed var(--line);border-radius:var(--r-sm);padding:6px 10px;font-size:.88rem;color:var(--muted)}
-.diff p{margin:2px 0;color:var(--ink)}
-.rv{border-top:1px solid var(--line);padding-top:10px;margin-top:14px}
-.rv h3{font-size:1rem;margin:0 0 8px}
-.revh{margin-top:14px!important}
-.items{list-style:none;padding:0;margin:0 0 6px;display:flex;flex-direction:column;gap:4px}
-.tog{width:100%;display:grid;grid-template-columns:2.2em 1fr auto;align-items:center;gap:8px;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:7px 10px;cursor:pointer;min-height:44px}
-.item.bad .tog{background:var(--bad-bg);border-color:transparent}
-.item.rev .tog{background:var(--hiviz-bg);border-color:var(--hiviz)}
-.tog .n{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-.tog .st{font-size:.82rem;white-space:nowrap}
-.item.ok .st{color:var(--ok)} .item.bad .st{color:var(--bad)}
-.src{display:block;color:var(--muted);font-size:.76rem;padding:2px 10px 0;overflow-wrap:anywhere}
-details.all{margin:10px 0}
-details.all>summary{cursor:pointer;font-weight:500;padding:6px 0;color:var(--muted)}
-.gh{font-size:.85rem;color:var(--muted);margin:10px 0 4px;font-weight:600}
-.um{font-size:.85rem;color:var(--muted);padding-inline-start:18px}
-.mats-e{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
-.mat{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 10px}
-.mat.bad{background:var(--bad-bg);border-color:transparent}
-.ml{font-weight:500}
-.mctl{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
-.seg.sm{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:4px 10px;cursor:pointer;min-height:36px;font-size:.85rem}
-.mat .seg.sm.on[data-v="1"]{background:var(--ok);color:#fff;border-color:var(--ok)}
-.mat .seg.sm.on[data-v="0"]{background:var(--bad);color:#fff;border-color:var(--bad)}
-.qty{width:86px;border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--surface);min-height:36px}
-.unit{color:var(--muted);font-size:.85rem}
-.thumbs-e{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.thumb-e{position:relative;width:78px;height:78px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:var(--paper);display:flex;align-items:center;justify-content:center}
-.thumb-e img{width:100%;height:100%;object-fit:cover}
-.fic{font-size:.7rem;padding:4px;text-align:center;overflow-wrap:anywhere}
-.rm{position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:.75rem}
-.file-btn{cursor:pointer}
-.rawv,.summary{white-space:pre-wrap;background:var(--paper);border-radius:var(--r-sm);padding:10px;font-family:var(--font);font-size:.88rem;margin:0}
+.sh-title{margin:0 0 10px;font-size:1.15rem;padding-inline-end:44px}
+.sub{font-size:.95rem;margin:16px 0 6px}
+.summary{white-space:pre-wrap;background:var(--paper);border-radius:10px;padding:12px;font-family:var(--font);font-size:.9rem;margin:0;overflow-wrap:anywhere}
 .sheet-actions{position:sticky;bottom:0;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;background:var(--surface);padding:12px 0 calc(14px + env(safe-area-inset-bottom,0px));margin-top:14px;border-top:1px solid var(--line)}
+.names{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px}
+.nm{display:block;width:100%;text-align:start;background:transparent;border:0;padding:6px 4px;border-radius:6px;cursor:pointer}
+button.nm:hover{background:var(--paper)}
+li.nm{padding:4px 4px}
 .archive{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
-.arow{width:100%;display:grid;grid-template-columns:1fr auto;gap:2px 10px;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:10px 12px;cursor:pointer}
-.ad{font-weight:600}.ac{grid-column:1;color:var(--muted);font-size:.88rem}.as{grid-row:1/3;grid-column:2;align-self:center;font-size:.85rem;color:var(--muted)}
-.check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;cursor:pointer}
+.arow{width:100%;display:flex;flex-direction:column;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;cursor:pointer}
+.ad{font-weight:600}.ac{color:var(--muted);font-size:.88rem}
+.field{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+.field span{font-weight:500;font-size:.9rem}
+.field input,#sheetBody textarea{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface);width:100%}
+.check{display:flex;gap:10px;align-items:flex-start;margin:8px 0;cursor:pointer}
 .check input{width:20px;height:20px;margin-top:3px;flex:none}
-.sub{font-size:1rem;margin:18px 0 0;border-top:1px solid var(--line);padding-top:12px}
-.viewer{margin:0}.viewer img{width:100%;height:auto;border-radius:var(--r-sm);display:block}.viewer figcaption{color:var(--muted);font-size:.85rem;margin-top:6px}
-#toast{position:fixed;bottom:84px;left:50%;transform:translate(-50%,20px);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center;font-size:.92rem}
+.sm{font-size:.85rem}
+.me-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.me-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.ml{font-weight:500;min-width:6.5em}
+.segs{display:flex;gap:3px;flex-wrap:wrap}
+.seg.sm{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 8px;cursor:pointer;min-height:34px;font-size:.82rem}
+.seg.sm.on.k-ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.seg.sm.on.k-nophoto,.seg.sm.on.k-missing{background:var(--bad);border-color:var(--bad);color:#fff}
+.seg.sm.on.k-none{background:var(--muted);border-color:var(--muted);color:#fff}
+.qty{width:84px;border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--surface);min-height:34px}
+.gh{font-size:.82rem;color:var(--muted);margin:10px 0 4px}
+.items{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px}
+.tog{width:100%;display:grid;grid-template-columns:2em 1fr auto;gap:6px;align-items:center;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 10px;cursor:pointer;min-height:40px;font-size:.9rem}
+.tog.bad{background:var(--bad-bg);border-color:transparent}
+.tog .n{font-weight:700;color:var(--muted)}
+#toast{position:fixed;bottom:90px;left:50%;transform:translate(-50%,20px);background:#16233A;color:#fff;padding:9px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center;font-size:.9rem}
 #toast.on{opacity:1;transform:translate(-50%,0)}
-@media (prefers-color-scheme:dark){ #toast{background:#E6EBF2;color:#0E1522} }
-@media (max-width:640px){
-  .top{position:static}
-  .cards{grid-template-columns:1fr}
-  .bar-in{flex-wrap:nowrap}
-  .bar-in .grp{width:auto;flex:1}
-  .bar-in .grp:last-child{flex:0 0 auto}
-  #dateLabel{font-size:1.2rem}
-  .tick{height:18px}
-  .bar-in .btn{flex:1;padding:8px 8px;font-size:.88rem}
-}
-@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="top-in">
-    <div class="brand">
-      <h1>تقارير المقاولين اليومية</h1>
-      <div class="icons">
-        <button class="ibtn" data-act="archive">🗂 الأرشيف</button>
-        <button class="ibtn" data-act="settings" aria-label="الإعدادات">⚙️</button>
-      </div>
+<div class="app">
+  <header class="top"><div class="top-in">
+    <div class="r1"><h1>تقارير المقاولين</h1>
+      <div><button class="ib" data-act="archive">🗂 الأرشيف</button><button class="ib" data-act="settings" aria-label="الإعدادات">⚙️</button></div></div>
+    <div class="r2">
+      <label class="datebtn"><span id="dateLabel"></span><input id="date" type="date" aria-label="تغيير التاريخ"></label>
+      <div id="shifts" role="group" aria-label="الوردية"></div>
+      <button id="counter" data-act="counter"></button>
     </div>
-    <div class="when">
-      <div class="date-wrap"><span id="dateLabel"></span><input id="date" type="date" aria-label="تاريخ الشفت"></div>
-      <div id="shifts" role="group" aria-label="الشفت"></div>
-      <span id="sessionState"></span>
-    </div>
-  </div>
-  <div class="roster-wrap"><div id="roster" aria-label="حالة المقاولين"></div></div>
-</header>
+  </div></header>
 
-<main>
-  <div class="toolbar">
-    <button class="btn primary big" data-act="pasteAny">📥 لصق تقرير مقاول</button>
-    <div id="tally" role="group" aria-label="فلترة حسب الحالة"></div>
-    <input id="search" class="search" type="search" placeholder="بحث عن مقاول…  ( / )" aria-label="بحث عن مقاول">
-  </div>
-  <div id="board"></div>
-</main>
+  <main id="chat" aria-live="polite"></main>
 
-<nav class="bar">
-  <div class="bar-in">
-    <div class="grp">
-      <button class="btn" data-act="summary">📤 الملخص</button>
-      <button class="btn" data-act="excel">📊 Excel</button>
-    </div>
-    <div class="grp"><button class="btn ghost" id="closeBtn" data-act="closeShift">🔒 إغلاق الشفت</button></div>
-  </div>
-</nav>
+  <footer class="composer"><div class="composer-in">
+    <button class="btn sumbtn" data-act="summary">📤 الملخص</button>
+    <textarea id="compose" rows="1" placeholder="الصق رسالة المقاول هنا…" aria-label="رسالة المقاول"></textarea>
+    <button class="send" id="sendBtn" data-act="send" aria-label="إرسال" disabled>➤</button>
+  </div></footer>
+</div>
 
-<dialog id="sheet" class="sheet"><button class="x" data-act="dismiss" aria-label="إغلاق">✕</button><div id="sheetBody"></div></dialog>
+<dialog id="sheet" class="sheet"><button class="x" data-act="close" aria-label="إغلاق">✕</button><div id="sheetBody"></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
-
 <script>
 /* ===================== CORE (pure logic, no DOM) ===================== */
 (function (root) {
@@ -309,12 +248,12 @@ const SAFETY_ITEMS = [
 ].map(i => Object.assign(i, { id: 'S' + String(i.no).padStart(2, '0') }));
 
 const MATERIALS = [
-  { id: 'M01', label: 'كابل مؤقت 70*4',  type: 'length',   unit: 'م',   kw: ['70*4', '4*70'] },
-  { id: 'M02', label: 'كابل مؤقت 185*4', type: 'length',   unit: 'م',   kw: ['185*4', '4*185'] },
-  { id: 'M03', label: 'كابل 800',        type: 'length',   unit: 'م',   kw: ['كابل 800', '800'] },
-  { id: 'M04', label: 'نهاية 50',        type: 'quantity', unit: 'حبة', kw: ['نهايه 50', 'نهايات 50', 'end 50', 'نهايات', 'نهايه'] },
-  { id: 'M05', label: 'فني ريلاي',       type: 'presence', yes: 'موجود', no: 'غير موجود', kw: ['فني ريلاي', 'فني الريلاي', 'ريلاي', 'relay'] },
-  { id: 'M06', label: 'أجهزة الفحص',     type: 'presence', yes: 'متوفر', no: 'غير متوفر', kw: ['اجهزه الفحص', 'اجهزه فحص', 'اجهزه', 'testing equipment', 'test equipment'] },
+  { id: 'M01', label: 'كابل مؤقت 70*4',  short: 'مؤقت 70',     type: 'length',   kw: [] },
+  { id: 'M02', label: 'كابل مؤقت 185*4', short: 'مؤقت 185',    type: 'length',   kw: [] },
+  { id: 'M03', label: 'كابل 800',        short: 'كوابل 800',   type: 'length',   kw: [] },
+  { id: 'M04', label: 'نهاية 50',        short: 'نهاية 50',    type: 'quantity', kw: [] },
+  { id: 'M05', label: 'فني ريلاي',       short: 'فني ريلاي',   type: 'presence', kw: [] },
+  { id: 'M06', label: 'أجهزة الفحص',     short: 'أجهزة الفحص', type: 'presence', kw: [] },
 ];
 
 const REASONS = { explicit_no: 'غير متوفر', unmarked: 'بدون علامة', not_found: 'لم يُذكر', conflict: 'متعارض', manual: 'تعديل يدوي' };
@@ -431,693 +370,679 @@ function detectDate(text) {
 }
 
 
-/* ---------- main parser ---------- */
-// strips WhatsApp copy prefixes "[30/09/2026, 9:15 ص] أبو فهد: " and bullets
 function cleanLine(l) {
   l = String(l).trim();
   l = l.replace(/^\[[^\]]{4,40}\]\s*[^:\n]{1,40}:\s*/, '');
-  l = l.replace(/^[\u2022\u25AA\u25FE\u25AB\u00B7\u25CF\u25E6\u2023\-–*]+\s*(?=\S)/u, m => /\d/.test(l.slice(m.length, m.length + 1)) ? '' : '');
+  l = l.replace(/^[\u2022\u25AA\u25FE\u25AB\u00B7\u25CF\u25E6\u2023*]+\s*/u, '');
   return l.trim();
 }
-function parseReport(rawText, opts) {
-  opts = opts || {};
-  const shifts = opts.shifts || [];
-  const lines = String(rawText || '').replace(/\r/g, '').split('\n').map(cleanLine).filter(Boolean);
+/* ---------- v2: light normalization keeping positions aligned ---------- */
+// L = display text (digits latin, no diacritics, collapsed spaces). N = same length, letters unified for matching.
+function light(s) {
+  s = toLatinDigits(String(s || ''));
+  s = s.replace(/[\u064B-\u065F\u0670\u0640\u200c-\u200f\u202a-\u202e\ufe0f]/g, '');
+  s = s.replace(/(\d)\s*[*×xX✕]\s*(\d)/g, '$1*$2');
+  return s.replace(/[ \t\u00a0]+/g, ' ').trim();
+}
+function letters(s) { return s.toLowerCase().replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/ؤ/g, 'و').replace(/ئ/g, 'ي'); }
 
-  // notes section
-  let notes = '', notesIdx = lines.findIndex(l => /^(ملاحظات|ملاحظه|ملاحظة|notes?)\b/.test(norm(l)) || /^(ملاحظات|ملاحظه)/.test(norm(l)));
-  const body = notesIdx >= 0 ? lines.slice(0, notesIdx) : lines;
-  if (notesIdx >= 0) {
-    const first = lines[notesIdx].replace(/^[^:：\-]*[:：\-]?/, '').trim();
-    notes = [first, ...lines.slice(notesIdx + 1)].filter(Boolean).join('\n');
-  }
+const NEG_CH = /[\u274C\u274E\u2716\u2717\u2718\u{1F6AB}\u26D4\u{1F534}\u{1F7E5}]/u;
+const POS_CH = /[\u2705\u2714\u2611\u2713\u{1F44D}\u{1F7E2}\u{1F7E9}]/u;
+const PEND_CH = /[\u{1F504}\u{1F501}\u23F3\u231B]/u;
+const NEG_TXT = /لا\s*(?:يوجد|يحد|يجد|توجد)|غير\s*متوفر|غير\s*موجود|ما\s*في|مافي|ناقص|مفقود|منتهي/;
+const PHOTO_TXT = /صور/;
+const ISSUE_RE = /كليشه|الملف|ملف|قديم|منتهي|لوحه|تصريح/;
 
-  const safetyHits = {}; // id -> [{mark, conf, line}]
-  const matHits = {};
-  const unmatched = [];
-
-  for (const raw of body) {
-    const { num, text } = splitNumber(raw);
-    const n = norm(text);
-    if (!n) continue;
-    const nFull = norm(raw);
-    if (/^(المقاول|مقاول|اسم المقاول|التاريخ|تاريخ|اليوم|الشفت|شفت|الورديه|contractor|date|shift)/.test(nFull)) continue;
-    if (/[:：]\s*$/.test(raw) && /(اشتراطات|متطلبات|المواد|السلامه)/.test(nFull)) continue;
-    const mat = matchMaterial(n);
-    if (mat) {
-      (matHits[mat.mat.id] = matHits[mat.mat.id] || []).push({ raw, mark: readMark(raw, n.split(mat.key).join(' ')), value: readNumber(n, mat.key) });
+/* split one line into segments; each segment = {s,e,neg,pos} over L/N positions */
+function segmentize(L) {
+  const chars = [...L];
+  // map char index -> string offset (emoji are 2 code units)
+  const offs = []; let o = 0; for (const c of chars) { offs.push(o); o += c.length; } offs.push(o);
+  const segs = [];
+  let start = 0, depth = 0, gid = 0; const negStack = [], gidStack = [];
+  let curNeg = false, curPos = false, nextNeg = false, nextPos = false;
+  const hasText = (a, b) => L.slice(offs[a], offs[b]).trim().length > 0;
+  const flush = (i) => {
+    if (hasText(start, i)) {
+      let s = offs[start], e = offs[i];
+      while (s < e && /\s/.test(L[s])) s++;
+      while (e > s && /\s/.test(L[e - 1])) e--;
+      segs.push({ s, e, neg: negStack.length > 0 || curNeg || nextNeg, pos: curPos || nextPos, grp: gidStack.length ? gidStack[gidStack.length - 1] : 0 });
+      nextNeg = nextPos = false;
+    }
+    curNeg = curPos = false; start = i + 1;
+  };
+  for (let i = 0; i < chars.length; i++) {
+    const ch = chars[i];
+    const isN = NEG_CH.test(ch), isP = POS_CH.test(ch);
+    if (isN || isP) {
+      let j = i + 1; while (j < chars.length && /\s/.test(chars[j])) j++;
+      if (chars[j] === '(') { flush(i); depth++; if (isN) { negStack.push(depth); gidStack.push(++gid); } i = j; start = j + 1; continue; }
+      if (hasText(start, i)) { if (isN) curNeg = true; else curPos = true; flush(i); }
+      else { if (isN) nextNeg = true; else nextPos = true; start = i + 1; }
       continue;
     }
+    if (ch === '(') { depth++; continue; }
+    if (ch === ')') { if (negStack.length && negStack[negStack.length - 1] === depth) { flush(i); negStack.pop(); gidStack.pop(); } depth = Math.max(0, depth - 1); continue; }
+    const prev = chars[i - 1], next = chars[i + 1];
+    const isSep = '&،,؛;|'.includes(ch)
+      || (ch === '.' && !(/\d/.test(prev || '') && /\d/.test(next || '')))
+      || ((ch === '-' || ch === '–' || ch === '—') && (prev === ' ' || prev === ')' || next === ' ' || i === 0));
+    if (isSep) flush(i);
+  }
+  flush(chars.length);
+  return segs;
+}
+
+/* find material mentions and value-numbers inside normalized text t */
+function findMentions(t) {
+  const out = [], vals = [];
+  const kws = [['M04', /نهايه|نهايات|end\s*50/g], ['M05', /ريلاي|relay/g], ['M06', /اجهزه\s*(?:ال)?فحص|test(?:ing)?\s*equipment/g]];
+  for (const [id, re] of kws) { re.lastIndex = 0; let m; while ((m = re.exec(t))) out.push({ id, pos: m.index }); }
+  const numRe = /(\d+(?:\.\d+)?)(?:\*(\d+))?/g; let m;
+  while ((m = numRe.exec(t))) {
+    const a = parseFloat(m[1]), b = m[2] ? parseFloat(m[2]) : null, pos = m.index;
+    const before = t.slice(Math.max(0, pos - 14), pos), after = t.slice(pos + m[0].length, pos + m[0].length + 8);
+    if (/(بطول|طول|عدد|الطول|العدد)\s*[:(]?\s*$/.test(before) || /[:=]\s*$/.test(before)) { vals.push({ v: a, pos }); continue; }
+    if (b != null) { const set = [a, b]; if (set.includes(185)) out.push({ id: 'M02', pos }); else if (set.includes(70)) out.push({ id: 'M01', pos }); else vals.push({ v: a, pos }); continue; }
+    if (a === 185) { out.push({ id: 'M02', pos }); continue; }
+    if (a === 800) { out.push({ id: 'M03', pos }); continue; }
+    if (a === 70 && (/(مؤقت|موقت|كابل|كوابل|كيبل|المؤقت)\s*$/.test(before) || /^\s*(بطول|طول|متر|م\b|م$|\*)/.test(after) || t.trim() === m[0])) { out.push({ id: 'M01', pos }); continue; }
+    if (a === 50 && /(نهايه|نهايات|end)\s*$/.test(before)) continue; // part of the name "نهاية 50"
+    vals.push({ v: a, pos });
+  }
+  out.sort((x, y) => x.pos - y.pos);
+  // drop duplicate mentions of same id that are adjacent (e.g. "نهاية 50" matched once)
+  const ded = out.filter((x, i) => !(i && out[i - 1].id === x.id && x.pos - out[i - 1].pos < 6));
+  return { mentions: ded, vals };
+}
+
+function emptyMat() { return { mentioned: true, available: null, value: null, photo: null, flagged: false }; }
+function applyMention(mats, id, f) {
+  const v = mats[id] || (mats[id] = emptyMat());
+  if (f.value != null && v.value == null) v.value = f.value;
+  if (f.photoMissing) v.photo = false;
+  let av;
+  if (f.notAvail && f.value == null) av = false;
+  else if (f.value != null) av = true;
+  else if (f.photoMissing) av = true;
+  else if (f.unfilled) av = false;
+  else if (f.neg) av = false;
+  else av = true;
+  if (av === true && f.neg && !f.photoMissing) v.flagged = true;
+  if (f.unfilled && v.available == null) { v.mentioned = false; v.available = false; return; }
+  v.mentioned = true;
+  v.available = (v.available === true || av === true) ? true : av;
+}
+
+/* parse free-text part (one line) into materials + issues */
+function parseFreeLine(L, N, mats, issues) {
+  let last = null, lastIssue = null;
+  for (const sg of segmentize(L)) {
+    const t = N.slice(sg.s, sg.e), disp = L.slice(sg.s, sg.e);
+    const { mentions, vals } = findMentions(t);
+    if (!mentions.length) {
+      const photoMissing = PHOTO_TXT.test(t) && NEG_TXT.test(t);
+      if (photoMissing) {
+        let targets = [];
+        if (/كوابل|كيبل|كابلات|الكوابل/.test(t)) targets = ['M01', 'M02', 'M03'];
+        else if (/مؤقت|موقت|المؤقت/.test(t)) targets = ['M01', 'M02'];
+        else if (last) targets = [last];
+        targets = targets.filter(id => mats[id] && mats[id].available !== false);
+        if (targets.length) { targets.forEach(id => { mats[id].photo = false; mats[id].available = true; }); continue; }
+      }
+      if (sg.neg || ISSUE_RE.test(t) || photoMissing) {
+        const clean = disp.replace(/^[\s&،,:\-–.]+|[\s&،,:\-–.]+$/g, '').trim();
+        if (!clean) continue;
+        if (sg.grp && lastIssue && lastIssue.grp === sg.grp) { issues[lastIssue.idx] += ' & ' + clean; }
+        else if (!issues.includes(clean)) { issues.push(clean); lastIssue = { grp: sg.grp, idx: issues.length - 1 }; }
+      }
+      continue;
+    }
+    for (let k = 0; k < mentions.length; k++) {
+      const a = k === 0 ? 0 : mentions[k].pos, b = k + 1 < mentions.length ? mentions[k + 1].pos : t.length;
+      const ct = t.slice(a, b);
+      const val = vals.find(x => x.pos >= a && x.pos < b);
+      const photoMissing = PHOTO_TXT.test(ct) && NEG_TXT.test(ct);
+      applyMention(mats, mentions[k].id, {
+        value: val ? val.v : null, photoMissing, notAvail: !photoMissing && NEG_TXT.test(ct),
+        neg: sg.neg, pos: sg.pos, unfilled: /[:：]\s*$/.test(ct.trim()) && !val,
+      });
+      last = mentions[k].id;
+    }
+  }
+}
+
+/* ---------- blocks: one message may hold several contractors ---------- */
+const HEADER_LINE = /^(⚠|المواد الحرجه|المواد|التاريخ|تاريخ|اليوم|الورديه|ورديه|الشفت|شفت|المتطلبات|متوفر|غير متوفر|غير متجاوب|المقاولين|اشتراطات|متطلبات السلامه|contractor|date|shift)/;
+function lineStartContractor(N) {
+  const s = N.replace(/^[\s\-•*·▪◾\d.)]+/u, '');
+  let best = null;
+  for (const c of CONTRACTORS) for (const k of c.keys) if (s.startsWith(k) && (!best || k.length > best.k.length)) best = { id: c.id, k, off: N.length - s.length };
+  return best;
+}
+function splitBlocks(lines) {
+  const starts = [];
+  lines.forEach((l, i) => { const h = lineStartContractor(l.N); if (h) starts.push({ i, h }); });
+  const ids = new Set(starts.map(x => x.h.id));
+  if (starts.length >= 2 && ids.size >= 2) {
+    return starts.map((st, k) => ({ contractor: { id: st.h.id, confidence: 'high' }, strip: st.h.off + st.h.k.length,
+      lines: lines.slice(st.i, k + 1 < starts.length ? starts[k + 1].i : lines.length), multi: true }));
+  }
+  if (starts.length === 1 && starts[0].i <= 2) return [{ contractor: { id: starts[0].h.id, confidence: 'high' }, strip: starts[0].h.off + starts[0].h.k.length, lines: lines.slice(starts[0].i), pre: lines.slice(0, starts[0].i) }];
+  return [{ contractor: detectContractor(lines.map(l => l.L)), strip: 0, lines, byHeader: true }];
+}
+
+function parseBlock(block) {
+  const lines = block.lines.map((l, i) => {
+    if (i === 0 && block.strip) {
+      let L = l.L.slice(block.strip), N = l.N.slice(block.strip);
+      const m = L.match(/^[\s:：\-–]*(?:[\u2705\u274C\u2714\u{1F504}\u2716]\s*)*/u); L = L.slice(m[0].length); N = N.slice(m[0].length);
+      const headMark = m[0];
+      return { L, N, first: true };
+    }
+    return l;
+  });
+  const first = lines[0];
+  // pending marker right after the name, and nothing else
+  const firstRest = first.first ? first.L.replace(/[\s🔄🔁⏳⌛✅❌]/gu, '') : null;
+  const pending = first.first && PEND_CH.test(first.L) && !firstRest && lines.length === 1;
+  const emptyName = first.first && !first.L.trim() && lines.length === 1;
+  if (pending || emptyName) return { contractor: block.contractor, pending: true };
+
+  const mats = {}, issues = [], safetyHits = {}, unmatched = [];
+  let notes = '', inNotes = false;
+  for (const { L, N, first: isFirst } of lines) {
+    if (!L.trim()) continue;
+    if (inNotes) { notes += (notes ? '\n' : '') + L; continue; }
+    if (/^(ملاحظات|ملاحظه)/.test(N)) { inNotes = true; notes = L.replace(/^[^:：\-]*[:：\-]?/, '').trim(); continue; }
+    if (!isFirst && HEADER_LINE.test(N)) continue;
+    if (!isFirst && /^(المقاول|مقاول|اسم المقاول)/.test(N)) continue;
+    let { num, text } = splitNumber(L);
+    if (!num || num > 35) { num = null; text = L; }
+    const off = L.length - text.length;
+    const Lt = L.slice(off), Nt = N.slice(off);
+    const { mentions } = findMentions(Nt);
+    if (mentions.length) { parseFreeLine(Lt, Nt, mats, issues); continue; }
+    const n = norm(Lt);
     const ms = matchSafety(n);
     const byNum = (num && num >= 1 && num <= 35) ? SAFETY_ITEMS[num - 1] : null;
-    let item = null, conf = null;
-    if (ms && byNum) {
-      if (ms.item.id === byNum.id) { item = byNum; conf = 'high'; }
-      else { item = ms.tie ? byNum : ms.item; conf = 'low'; }
-    } else if (ms) { item = ms.item; conf = ms.tie ? 'low' : 'medium'; }
-    else if (byNum) { item = byNum; conf = 'medium'; }
-    if (!item) { if (!/[:：]\s*$/.test(raw)) unmatched.push(raw); continue; }
-    (safetyHits[item.id] = safetyHits[item.id] || []).push({ raw, mark: readMark(raw, n), conf, numId: byNum && byNum.id });
+    if (ms || byNum) {
+      let item, conf;
+      if (ms && byNum) { if (ms.item.id === byNum.id) { item = byNum; conf = 'high'; } else { item = ms.tie ? byNum : ms.item; conf = 'low'; } }
+      else if (ms) { item = ms.item; conf = ms.tie ? 'low' : 'medium'; } else { item = byNum; conf = 'medium'; }
+      (safetyHits[item.id] = safetyHits[item.id] || []).push({ raw: L, mark: readMark(L, n), conf });
+      continue;
+    }
+    if (NEG_CH.test(L) || ISSUE_RE.test(N) || (PHOTO_TXT.test(N) && NEG_TXT.test(N))) { parseFreeLine(Lt, Nt, mats, issues); continue; }
+    if (!/[:：]\s*$/.test(L)) unmatched.push(L);
   }
 
-  const safety = {};
-  for (const it of SAFETY_ITEMS) {
-    const hits = safetyHits[it.id];
-    if (!hits) { safety[it.id] = { ok: false, reason: 'not_found', line: null, review: false }; continue; }
-    const marks = [...new Set(hits.map(h => h.mark))];
-    const line = hits.map(h => h.raw).join(' | ');
-    const lowConf = hits.some(h => h.conf === 'low');
-    let ok = false, reason = null, review = lowConf;
-    if (marks.includes('conflict') || (marks.includes('yes') && marks.includes('no'))) { reason = 'conflict'; review = true; }
-    else if (marks.includes('no')) reason = 'explicit_no';
-    else if (marks.includes('yes') && !marks.includes('none')) ok = true;
-    else if (marks.includes('yes')) { ok = false; reason = 'conflict'; review = true; }
-    else reason = 'unmarked';
-    safety[it.id] = { ok, reason: ok ? null : reason, line, review, conf: hits[0].conf };
+  const checklist = Object.keys(safetyHits).length >= 5;
+  let safety = null;
+  if (checklist) {
+    safety = {};
+    for (const it of SAFETY_ITEMS) {
+      const hits = safetyHits[it.id];
+      if (!hits) { safety[it.id] = { ok: false, reason: 'not_found', line: null, review: false }; continue; }
+      const marks = [...new Set(hits.map(h => h.mark))];
+      let ok = false, reason, review = hits.some(h => h.conf === 'low');
+      if (marks.includes('conflict') || (marks.includes('yes') && marks.includes('no'))) { reason = 'conflict'; review = true; }
+      else if (marks.includes('no')) reason = 'explicit_no';
+      else if (marks.includes('yes') && !marks.includes('none')) ok = true;
+      else if (marks.includes('yes')) { reason = 'conflict'; review = true; }
+      else reason = 'unmarked';
+      safety[it.id] = { ok, reason: ok ? null : reason, line: hits.map(h => h.raw).join(' | '), review };
+    }
+  } else {
+    for (const id in safetyHits) if (safetyHits[id].some(h => h.mark === 'no')) {
+      const it = SAFETY_ITEMS.find(x => x.id === id); const t = `${it.short} غير متوفر`;
+      if (!issues.includes(t)) issues.push(t);
+    }
   }
+  return { contractor: block.contractor, pending: false, checklist, safety, materials: mats, issues, notes, unmatched };
+}
 
-  const materials = {};
-  for (const m of MATERIALS) {
-    const hits = matHits[m.id];
-    if (!hits) { materials[m.id] = { available: false, value: null, reason: 'not_found', line: null }; continue; }
-    const h = hits[hits.length - 1];
-    let available = false, value = null, reason = null;
-    if (h.mark === 'no') reason = 'explicit_no';
-    else if (m.type !== 'presence' && h.value != null) { value = h.value; available = h.value > 0; if (!available) { reason = 'explicit_no'; value = null; } }
-    else if (h.mark === 'yes') available = true;
-    else if (h.mark === 'conflict') reason = 'conflict';
-    else reason = 'unmarked';
-    materials[m.id] = { available, value: available ? value : null, reason, line: h.raw };
-  }
-
+function parseMessage(raw, opts) {
+  opts = opts || {};
+  const text = String(raw || '').replace(/\r/g, '');
+  const lines = text.split('\n').map(cleanLine).filter(Boolean).map(l => { const L = light(l); return { L, N: letters(L) }; });
+  const blocks = splitBlocks(lines);
   return {
-    contractor: detectContractor(lines),
-    shift: detectShift(lines, shifts),
-    date: detectDate(rawText),
-    safety, materials, notes, unmatched,
-    matchedCount: Object.keys(safetyHits).length,
+    date: detectDate(text),
+    shift: detectShift(lines.map(l => l.L), opts.shifts || []),
+    reports: blocks.map(parseBlock),
+    multi: blocks.length > 1,
   };
 }
 
-/* ---------- status ---------- */
-function missingIds(report) { return SAFETY_ITEMS.filter(i => report.safety && report.safety[i.id] && !report.safety[i.id].ok).map(i => i.id); }
-function reportStatus(report, photoCount, settings) {
-  if (!report) return 'pending';
+/* ---------- evaluation & output ---------- */
+function fmtN(x) { return Number.isInteger(x) ? String(x) : String(Math.round(x * 100) / 100); }
+function matText(m, v) {
+  if (m.type === 'length') return v.value != null ? `${m.short} بطول ${fmtN(v.value)} متر` : m.short;
+  if (m.type === 'quantity') return v.value != null ? `${m.short} عدد ${fmtN(v.value)}` : m.short;
+  return m.short;
+}
+function matState(v) {
+  if (!v || !v.mentioned) return 'none';
+  if (!v.available) return 'missing';
+  if (v.photo === false) return 'nophoto';
+  if (v.flagged) return 'flagged';
+  return 'ok';
+}
+const MAT_STATE_LABEL = { ok: 'متوفر', nophoto: 'لا يوجد صورة', missing: 'لا يوجد', flagged: 'عليه ملاحظة ❌', none: 'لم يُذكر' };
+function missingIds(r) { return r.checklist && r.safety ? SAFETY_ITEMS.filter(i => !r.safety[i.id].ok).map(i => i.id) : []; }
+
+function evaluate(r, settings) {
   const s = settings || {};
-  if (missingIds(report).length) return 'incomplete';
-  if (s.requirePhoto && !(photoCount > 0)) return 'incomplete';
-  if (s.materialsAffectStatus && MATERIALS.some(m => !report.materials[m.id] || !report.materials[m.id].available)) return 'incomplete';
-  return 'complete';
-}
-function incompleteReasons(report, photoCount, settings) {
-  const r = [], s = settings || {};
-  const miss = missingIds(report).length;
-  if (miss) r.push(`سلامة: ناقص ${miss}`);
-  if (s.requirePhoto && !(photoCount > 0)) r.push('صور/ملفات مفقودة');
-  if (s.materialsAffectStatus) { const mm = MATERIALS.filter(m => !report.materials[m.id]?.available).length; if (mm) r.push(`مواد: ${mm}`); }
-  return r;
-}
-function materialDisplay(m, v) {
-  if (!v) return { ok: false, text: '—' };
-  if (m.type === 'presence') return { ok: !!v.available, text: v.available ? m.yes : m.no };
-  if (!v.available) return { ok: false, text: 'غير متوفر' };
-  return { ok: true, text: v.value != null ? `${fmtNum(v.value)} ${m.unit}` : 'متوفر' };
-}
-function fmtNum(x) { return Number.isInteger(x) ? String(x) : String(Math.round(x * 100) / 100); }
-const RANK = { complete: 0, incomplete: 1, pending: 2 };
-function sortContractors(list, statusOf) {
-  return list.slice().sort((a, b) => RANK[statusOf(a.id)] - RANK[statusOf(b.id)] || CONTRACTORS.indexOf(a) - CONTRACTORS.indexOf(b));
-}
-function diffReports(prev, next) {
-  if (!prev) return null;
-  const nowOk = [], nowMissing = [];
-  for (const it of SAFETY_ITEMS) {
-    const a = prev.safety[it.id]?.ok, b = next.safety[it.id]?.ok;
-    if (!a && b) nowOk.push(it); else if (a && !b) nowMissing.push(it);
+  const required = s.requiredMaterials || ['M01', 'M02', 'M03', 'M04'];
+  if (!r) return { status: 'pending', ok: [], problems: [] };
+  const ok = [], problems = [];
+  for (const m of MATERIALS) {
+    const v = r.materials[m.id], st = matState(v);
+    if (st === 'none') { if (required.includes(m.id)) problems.push(`${m.short} لم يُذكر`); continue; }
+    if (st === 'ok') ok.push(matText(m, v));
+    else if (st === 'missing') problems.push(`${m.short} لا يوجد`);
+    else if (st === 'nophoto') problems.push(`${matText(m, v)} لا يوجد صورة`);
+    else problems.push(matText(m, v));
   }
-  return { nowOk, nowMissing };
+  const miss = missingIds(r).map(id => SAFETY_ITEMS.find(i => i.id === id));
+  if (miss.length) problems.push(`ملف السلامة ناقص ${miss.length}: ${miss.slice(0, 6).map(i => i.short).join('، ')}${miss.length > 6 ? ` و${miss.length - 6} غيرها` : ''}`);
+  else if (!r.checklist && s.requireChecklist) problems.push('قائمة الاشتراطات لم تُرسل');
+  (r.issues || []).forEach(x => problems.push(x));
+  return { status: problems.length ? 'incomplete' : 'complete', ok, problems };
+}
+const ICONS = { complete: '✅', incomplete: '❌', pending: '🔄' };
+function summaryLine(name, ev) {
+  if (ev.status === 'pending') return `${name}🔄`;
+  let s = name + ICONS[ev.status];
+  if (ev.ok.length) s += `(${ev.ok.join(' & ')})`;
+  ev.problems.forEach((p, i) => { s += (i === 0 && !ev.ok.length ? '' : ' - ') + `❌(${p})`; });
+  return s;
+}
+function fmtDMY(iso) { const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}`; }
+function summaryText(date, shift, reportsById, settings) {
+  const RANKS = { complete: 0, incomplete: 1, pending: 2 };
+  const rows = CONTRACTORS.map((c, i) => ({ c, i, ev: evaluate(reportsById[c.id], settings) }))
+    .sort((a, b) => RANKS[a.ev.status] - RANKS[b.ev.status] || a.i - b.i);
+  const L = ['⚠️متطلبات السلامة⚠️', `التاريخ : ${fmtDMY(date)}`, `الوردية : ${shift}`, '', 'المتطلبات', 'متوفر ✅', 'غير متوفر ❌', 'غير متجاوب 🔄', '', '', 'المقاولين :', ''];
+  rows.forEach(r => { L.push(summaryLine(r.c.name, r.ev)); L.push(''); });
+  return L.join('\n').trim();
 }
 
-function templateText(shifts) {
-  const L = [];
-  L.push('المقاول: ', 'التاريخ: ', `الشفت: ${shifts && shifts.length ? '(' + shifts.join(' / ') + ')' : ''}`, '');
-  L.push('اشتراطات السلامة (ضع ✅ على المتوفر و ❌ على غير المتوفر):');
+function templateText() {
+  const L = ['المقاول: ', 'التاريخ: ', 'الوردية: ', '', 'اشتراطات السلامة (ضع ✅ على المتوفر و ❌ على غير المتوفر):'];
   for (const it of SAFETY_ITEMS) L.push(`${it.no}. ${it.label} `);
-  L.push('', 'المواد الحرجة:');
-  for (const m of MATERIALS) L.push(m.type === 'presence' ? `${m.label}: ` : `${m.label} (${m.unit === 'م' ? 'متر' : 'عدد'}): `);
-  L.push('', 'ملاحظات:');
+  L.push('', 'المواد الحرجة (اكتب لا يوجد صورة إذا ما فيه صورة):',
+    'كابل مؤقت 70*4 (الطول بالمتر): ', 'كابل مؤقت 185*4 (الطول بالمتر): ', 'كابل 800 (الطول بالمتر): ', 'نهاية 50 (العدد): ', 'فني ريلاي: ', 'أجهزة الفحص: ', '', 'ملاحظات:');
   return L.join('\n');
 }
-
-const API = { CONTRACTORS, GROUPS, SAFETY_ITEMS, MATERIALS, REASONS, norm, parseReport, reportStatus, incompleteReasons,
-  materialDisplay, missingIds, sortContractors, diffReports, templateText, readMark, fmtNum, contractorsIn };
+const API = { templateText, CONTRACTORS, GROUPS, SAFETY_ITEMS, MATERIALS, REASONS, MAT_STATE_LABEL, ICONS, norm, parseMessage, evaluate, summaryLine, summaryText,
+  matState, matText, missingIds, fmtN, fmtDMY, segmentize, readMark };
 if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Core = API;
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
 <script>
-/* ===================== APP ===================== */
+/* ===================== APP (chat) ===================== */
 (function () {
 'use strict';
-const { CONTRACTORS, GROUPS, SAFETY_ITEMS, MATERIALS, REASONS } = Core;
+const { CONTRACTORS, GROUPS, SAFETY_ITEMS, MATERIALS, REASONS, MAT_STATE_LABEL, ICONS } = Core;
 const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const cName = id => (CONTRACTORS.find(c => c.id === id) || {}).name || '';
-const ICON = { complete: '✅', incomplete: '❌', pending: '🔄' };
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
 const LABEL = { complete: 'مكتمل', incomplete: 'ناقص', pending: 'غير متجاوب' };
 
 /* ---------- IndexedDB ---------- */
-const DB_NAME = 'contractors-daily-reports';
 let db;
 function openDB() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open(DB_NAME, 1);
+    const r = indexedDB.open('contractors-chat', 1);
     r.onupgradeneeded = () => {
       const d = r.result;
-      const s = d.createObjectStore('sessions', { keyPath: 'id' }); s.createIndex('date', 'date');
-      const rp = d.createObjectStore('reports', { keyPath: 'id' }); rp.createIndex('sessionId', 'sessionId');
-      const f = d.createObjectStore('files', { keyPath: 'id' }); f.createIndex('reportId', 'reportId'); f.createIndex('sessionId', 'sessionId');
+      d.createObjectStore('sessions', { keyPath: 'id' });
+      d.createObjectStore('reports', { keyPath: 'id' }).createIndex('sessionId', 'sessionId');
+      d.createObjectStore('messages', { keyPath: 'id' }).createIndex('sessionId', 'sessionId');
       d.createObjectStore('meta', { keyPath: 'key' });
     };
-    r.onsuccess = () => res(r.result);
-    r.onerror = () => rej(r.error);
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   });
 }
+const rq = r => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
 function tx(stores, mode, fn) {
   return new Promise((res, rej) => {
-    const t = db.transaction(stores, mode);
-    let out;
-    Promise.resolve(fn(t)).then(v => { out = v; });
-    t.oncomplete = () => res(out);
-    t.onerror = () => rej(t.error);
-    t.onabort = () => rej(t.error);
+    const t = db.transaction(stores, mode); let out;
+    Promise.resolve(fn(t)).then(v => { out = v; }, rej);
+    t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
   });
 }
-const req = r => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
-const getAll = (store, index, key) => tx([store], 'readonly', t => { const s = t.objectStore(store); return req(index ? s.index(index).getAll(key) : s.getAll()); });
-const getOne = (store, key) => tx([store], 'readonly', t => req(t.objectStore(store).get(key)));
+const getAll = (store, index, key) => tx([store], 'readonly', t => { const s = t.objectStore(store); return rq(index ? s.index(index).getAll(key) : s.getAll()); });
+const getOne = (store, key) => tx([store], 'readonly', t => rq(t.objectStore(store).get(key)));
 
 /* ---------- state ---------- */
-const DEFAULTS = { requirePhoto: true, materialsAffectStatus: false, shifts: ['صباحي', 'مسائي'] };
-const S = { settings: { ...DEFAULTS }, date: today(), shift: null, session: null, reports: new Map(), files: new Map(), filter: 'all', search: '' };
-const bc = 'BroadcastChannel' in window ? new BroadcastChannel('cdr-sync') : null;
-
+const DEFAULTS = { shifts: ['الصباح', 'المساء'], requiredMaterials: ['M01', 'M02', 'M03', 'M04'], requireChecklist: false };
+const S = { settings: { ...DEFAULTS }, date: today(), shift: null, reports: {}, messages: [] };
+const bc = 'BroadcastChannel' in window ? new BroadcastChannel('cc-sync') : null;
 function today() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
-const sessionId = () => `${S.date}_${S.shift}`;
-const readOnly = () => S.session && S.session.status === 'closed';
-const photoCount = cid => (S.files.get(cid) || []).length;
-const statusOf = cid => Core.reportStatus(S.reports.get(cid), photoCount(cid), S.settings);
-function fmtDate(iso) { const [y, m, d] = iso.split('-'); const day = new Date(iso + 'T12:00:00').toLocaleDateString('ar-SA-u-ca-gregory-nu-latn', { weekday: 'long' }); return `${day} ${d}/${m}/${y}`; }
+const sid = () => `${S.date}_${S.shift}`;
+const ev = cid => Core.evaluate(S.reports[cid], S.settings);
+function dayName(iso) { return new Date(iso + 'T12:00:00').toLocaleDateString('ar-SA-u-ca-gregory-nu-latn', { weekday: 'long' }); }
 function fmtTime(ts) { return new Date(ts).toLocaleTimeString('ar-SA-u-nu-latn', { hour: '2-digit', minute: '2-digit' }); }
 
 async function loadSettings() { const m = await getOne('meta', 'settings'); if (m) S.settings = { ...DEFAULTS, ...m.value }; }
 async function saveSettings() { await tx(['meta'], 'readwrite', t => t.objectStore('meta').put({ key: 'settings', value: S.settings })); }
-
-async function loadSession() {
-  const id = sessionId();
-  S.session = await getOne('sessions', id) || null;
-  const reps = await getAll('reports', 'sessionId', id);
-  const files = await getAll('files', 'sessionId', id);
-  S.reports = new Map(reps.map(r => [r.contractorId, r]));
-  S.files = new Map();
-  for (const f of files) { if (!S.files.has(f.contractorId)) S.files.set(f.contractorId, []); S.files.get(f.contractorId).push(f); }
-  render();
+async function load(scroll = true) {
+  const [reps, msgs] = await Promise.all([getAll('reports', 'sessionId', sid()), getAll('messages', 'sessionId', sid())]);
+  S.reports = {}; reps.forEach(r => S.reports[r.contractorId] = r);
+  S.messages = msgs.sort((a, b) => a.createdAt - b.createdAt);
+  render(scroll);
 }
+function notify() { bc && bc.postMessage({ sid: sid() }); }
+bc && (bc.onmessage = e => { if (e.data?.sid === sid()) load(false); });
+
+/* ---------- saving reports ---------- */
+function reportRecord(cid, parsed, msgId, prev) {
+  const line = prev ? Core.summaryLine(cName(cid), Core.evaluate(prev, S.settings)) : null;
+  return { id: `${sid()}|${cid}`, sessionId: sid(), contractorId: cid, messageId: msgId,
+    checklist: parsed.checklist, safety: parsed.safety, materials: parsed.materials, issues: parsed.issues || [], notes: parsed.notes || '', unmatched: parsed.unmatched || [],
+    revision: prev ? (prev.revision || 1) + 1 : 1, createdAt: prev ? prev.createdAt : Date.now(), updatedAt: Date.now(),
+    history: prev ? [...(prev.history || []).slice(-9), { revision: prev.revision, at: prev.updatedAt, line }] : [] };
+}
+const clean = o => JSON.parse(JSON.stringify(o));
 async function ensureSession(t) {
-  const id = sessionId();
-  const st = t.objectStore('sessions');
-  let s = await req(st.get(id));
-  if (!s) { s = { id, date: S.date, shift: S.shift, status: 'open', createdAt: Date.now() }; st.put(s); }
-  return s;
+  const st = t.objectStore('sessions'); const s = await rq(st.get(sid()));
+  if (!s) st.put({ id: sid(), date: S.date, shift: S.shift, createdAt: Date.now() });
 }
-function notify() { bc && bc.postMessage({ type: 'changed', sessionId: sessionId() }); }
-bc && (bc.onmessage = e => { if (e.data?.sessionId === sessionId()) loadSession().then(() => toast('تم تحديث البيانات من نافذة أخرى')); });
 
-/* ---------- rendering ---------- */
-function render() {
-  renderHeader();
-  const counts = { complete: 0, incomplete: 0, pending: 0 };
-  CONTRACTORS.forEach(c => counts[statusOf(c.id)]++);
-  renderRoster(counts);
-  const q = Core.norm(S.search);
-  const list = Core.sortContractors(CONTRACTORS, statusOf).filter(c =>
-    (S.filter === 'all' || statusOf(c.id) === S.filter) && (!q || c.keys.some(k => k.includes(q))));
-  const main = $('#board');
-  if (!list.length) { main.innerHTML = `<p class="empty">لا يوجد مقاول يطابق البحث أو الفلتر الحالي.</p>`; return; }
-  let html = '';
-  for (const st of ['complete', 'incomplete', 'pending']) {
-    const g = list.filter(c => statusOf(c.id) === st);
-    if (!g.length) continue;
-    html += `<section class="group g-${st}"><h2 class="group-title"><span>${ICON[st]} ${LABEL[st]}</span><span class="count">${g.length}</span></h2>`;
-    html += st === 'pending' ? `<div class="pending-list">${g.map(pendingRow).join('')}</div>` : `<div class="cards">${g.map(card).join('')}</div>`;
-    html += `</section>`;
+async function send(raw) {
+  raw = raw.trim(); if (!raw) return;
+  const p = Core.parseMessage(raw, { shifts: S.settings.shifts });
+  const msg = { id: uid(), sessionId: sid(), raw, createdAt: Date.now(), results: [], warnings: [] };
+  if (p.date && p.date !== S.date) msg.warnings.push(`تاريخ الرسالة ${Core.fmtDMY(p.date)} يختلف عن تاريخ المحادثة ${Core.fmtDMY(S.date)}.`);
+  if (p.shift && p.shift !== S.shift) msg.warnings.push(`الوردية في الرسالة "${p.shift}" تختلف عن الوردية المفتوحة "${S.shift}".`);
+  const toSave = [];
+  for (const r of p.reports) {
+    if (r.pending) { if (r.contractor.id) msg.results.push({ type: 'pending', cid: r.contractor.id }); continue; }
+    const found = Object.keys(r.materials).length || r.checklist || r.issues.length;
+    if (!found) { msg.results.push({ type: 'empty', cid: r.contractor.id || null }); continue; }
+    if (!r.contractor.id) { msg.results.push({ type: 'unknown', parsed: clean(r), candidates: r.contractor.candidates || [] }); continue; }
+    const rec = reportRecord(r.contractor.id, clean(r), msg.id, S.reports[r.contractor.id]);
+    toSave.push(rec); msg.results.push({ type: 'report', cid: rec.contractorId, revision: rec.revision });
   }
-  main.innerHTML = html;
-  hydrateThumbs(main);
+  await tx(['sessions', 'reports', 'messages'], 'readwrite', async t => {
+    await ensureSession(t);
+    toSave.forEach(r => t.objectStore('reports').put(r));
+    t.objectStore('messages').put(msg);
+  });
+  await load(); notify();
 }
-function renderHeader() {
+async function resolveUnknown(msgId, idx, cid) {
+  const msg = S.messages.find(m => m.id === msgId); const res = msg.results[idx];
+  const rec = reportRecord(cid, res.parsed, msgId, S.reports[cid]);
+  msg.results[idx] = { type: 'report', cid, revision: rec.revision };
+  await tx(['reports', 'messages'], 'readwrite', t => { t.objectStore('reports').put(rec); t.objectStore('messages').put(msg); });
+  await load(false); notify();
+}
+async function deleteReport(cid) {
+  if (!confirm(`حذف تقرير ${cName(cid)}؟ يرجع 🔄 في الملخص.`)) return;
+  await tx(['reports'], 'readwrite', t => t.objectStore('reports').delete(`${sid()}|${cid}`));
+  await load(false); notify(); toast('تم الحذف');
+}
+
+/* ---------- render ---------- */
+function render(scroll) {
+  $('#dateLabel').textContent = `${dayName(S.date)} ${Core.fmtDMY(S.date)}`;
   $('#date').value = S.date;
   $('#shifts').innerHTML = S.settings.shifts.map(s => `<button type="button" class="seg ${s === S.shift ? 'on' : ''}" data-shift="${esc(s)}" aria-pressed="${s === S.shift}">${esc(s)}</button>`).join('');
-  $('#dateLabel').textContent = fmtDate(S.date);
-  const ro = readOnly();
-  document.body.classList.toggle('readonly', !!ro);
-  $('#sessionState').innerHTML = ro ? `🔒 شفت مغلق <button class="link" data-act="reopen">إعادة فتح</button>` : (S.session ? 'شفت مفتوح' : 'لم يُسجّل أي تقرير بعد');
-  $('#closeBtn').hidden = !!ro || !S.session;
+  const got = Object.keys(S.reports).length;
+  const bad = Object.keys(S.reports).filter(c => ev(c).status === 'incomplete').length;
+  $('#counter').innerHTML = `استلمت <b>${got}</b> من ${CONTRACTORS.length}${got ? ` <span class="cdot">✅ ${got - bad} · ❌ ${bad}</span>` : ''}`;
+  const chat = $('#chat');
+  if (!S.messages.length) {
+    chat.innerHTML = `<div class="intro"><p class="intro-t">الصق رسالة المقاول تحت، وأطلع لك التفاصيل.</p>
+      <p class="intro-s">تقدر تلصق رسالة مقاول واحد، أو رسالة فيها أكثر من مقاول وكل واحد في سطر. لو لصقت نفس المقاول مرة ثانية يستبدل القديم.</p>
+      <button class="btn ghost sm" data-act="template">📋 نسخ نموذج الرسالة للمقاولين</button></div>`;
+  } else chat.innerHTML = S.messages.map(msgHTML).join('');
+  if (scroll) requestAnimationFrame(() => { chat.scrollTop = chat.scrollHeight; });
 }
-function renderRoster(counts) {
-  const total = CONTRACTORS.length, done = total - counts.pending;
-  $('#roster').innerHTML = CONTRACTORS.map(c => { const st = statusOf(c.id); return `<button class="tick t-${st}" data-jump="${c.id}" title="${esc(c.name)} — ${LABEL[st]}" aria-label="${esc(c.name)}: ${LABEL[st]}"></button>`; }).join('');
-  $('#tally').innerHTML = `
-    <button class="tf ${S.filter === 'all' ? 'on' : ''}" data-filter="all">الكل <b>${done}/${total}</b></button>
-    <button class="tf f-complete ${S.filter === 'complete' ? 'on' : ''}" data-filter="complete">✅ <b>${counts.complete}</b></button>
-    <button class="tf f-incomplete ${S.filter === 'incomplete' ? 'on' : ''}" data-filter="incomplete">❌ <b>${counts.incomplete}</b></button>
-    <button class="tf f-pending ${S.filter === 'pending' ? 'on' : ''}" data-filter="pending">🔄 <b>${counts.pending}</b></button>`;
-}
-function pendingRow(c) {
-  return `<div class="prow" id="c-${c.id}"><span class="pname">🔄 ${esc(c.name)}</span>
-    <button class="btn sm" data-act="paste" data-cid="${c.id}">📥 لصق تقريره</button></div>`;
-}
-function card(c) {
-  const r = S.reports.get(c.id), st = statusOf(c.id), files = S.files.get(c.id) || [];
-  const missing = SAFETY_ITEMS.filter(i => !r.safety[i.id].ok);
-  const reasons = Core.incompleteReasons(r, files.length, S.settings);
-  const SHOW = 6;
-  const chip = i => `<li class="chip"><b>${i.no}</b> ${esc(i.short)}${['unmarked', 'not_found', 'conflict'].includes(r.safety[i.id].reason) ? `<small>(${REASONS[r.safety[i.id].reason]})</small>` : ''}</li>`;
-  const safety = missing.length === 0
-    ? `<p class="line ok">🦺 اشتراطات السلامة: مكتملة <span class="num">35/35</span></p>`
-    : `<p class="line bad">🦺 اشتراطات السلامة: ناقص <span class="num">${missing.length}</span> من 35</p>
-       <ul class="chips">${missing.slice(0, SHOW).map(chip).join('')}${missing.length > SHOW ? `<li><details class="more"><summary>+${missing.length - SHOW} المزيد</summary><ul class="chips">${missing.slice(SHOW).map(chip).join('')}</ul></details></li>` : ''}</ul>`;
-  const mats = MATERIALS.map(m => { const d = Core.materialDisplay(m, r.materials[m.id]); return `<tr class="${d.ok ? 'ok' : 'bad'}"><td>${d.ok ? '✅' : '❌'}</td><th scope="row">${esc(m.label)}</th><td class="num">${esc(d.text)}</td></tr>`; }).join('');
-  const thumbs = files.map(f => f.type.startsWith('image/')
-    ? `<button class="thumb" data-view="${f.id}" aria-label="عرض ${esc(f.name)}"><img data-fid="${f.id}" alt=""></button>`
-    : `<button class="thumb file" data-view="${f.id}">📄<span>${esc(f.name)}</span></button>`).join('');
-  return `<article class="card s-${st}" id="c-${c.id}">
-    <header class="card-h"><h3>${ICON[st]} ${esc(c.name)}</h3><span class="time">آخر تحديث ${fmtTime(r.updatedAt)}${r.revision > 1 ? ` · تحديث ${r.revision}` : ''}</span></header>
-    ${reasons.length ? `<p class="reasons">${reasons.map(esc).join(' • ')}</p>` : ''}
-    ${safety}
-    <table class="mats"><caption>📦 المواد الحرجة</caption>${mats}</table>
-    ${r.notes ? `<p class="notes">📝 ${esc(r.notes).replace(/\n/g, '<br>')}</p>` : ''}
-    <div class="att">${files.length ? `<div class="thumbs">${thumbs}</div>` : `<p class="line ${S.settings.requirePhoto ? 'bad' : 'muted'}">📎 لا توجد مرفقات</p>`}</div>
-    <footer class="card-f">
-      <button class="btn sm" data-act="paste" data-cid="${c.id}">📥 تحديث بتقرير جديد</button>
-      <button class="btn sm ghost" data-act="edit" data-cid="${c.id}">✏️ تعديل</button>
-      <button class="btn sm ghost danger" data-act="reset" data-cid="${c.id}" aria-label="حذف تقرير ${esc(c.name)}">🗑</button>
-    </footer></article>`;
-}
-const urlCache = new Map();
-function fileURL(f) { if (!urlCache.has(f.id)) urlCache.set(f.id, URL.createObjectURL(f.blob)); return urlCache.get(f.id); }
-function allFiles() { return [...S.files.values()].flat(); }
-function hydrateThumbs(root) { root.querySelectorAll('img[data-fid]').forEach(img => { const f = allFiles().find(x => x.id === img.dataset.fid) || editorFileById(img.dataset.fid); if (f) img.src = fileURL(f); }); }
-
-/* ---------- sheet (modal) ---------- */
-const sheet = $('#sheet');
-function openSheet(html, cls = '') { $('#sheetBody').innerHTML = html; sheet.className = 'sheet ' + cls; if (!sheet.open) sheet.showModal(); $('#sheetBody').scrollTop = 0; }
-function closeSheet() { sheet.close(); E = null; }
-sheet.addEventListener('cancel', e => { if (E && E.dirty && !confirm('في تعديلات ما انحفظت. تبي تطلع بدون حفظ؟')) e.preventDefault(); else E = null; });
-
-/* ---------- editor (paste → review → save) ---------- */
-let E = null; // editor state
-function editorFileById(id) { return E && [...E.files, ...E.newFiles].find(f => f.id === id); }
-
-function openPaste(cid) {
-  if (readOnly()) return toast('الشفت مغلق. أعد فتحه أولًا.');
-  if (!S.shift) return toast('اختر الشفت أولًا.');
-  E = { cid: cid || null, step: 'paste', dirty: false };
-  openSheet(`
-    <h2 class="sh-title">📥 ${cid ? `تقرير ${esc(cName(cid))}` : 'لصق تقرير مقاول'}</h2>
-    <p class="hint">الصق رسالة المقاول كما هي. أي عنصر ما عليه ✅ صريحة يُحسب ناقص.</p>
-    <textarea id="raw" class="raw" rows="10" placeholder="الصق نص التقرير هنا…" autofocus></textarea>
-    <div class="row gap">
-      <button class="btn primary" data-act="parse">قراءة التقرير</button>
-      <button class="btn ghost" data-act="manual">إدخال يدوي</button>
-      <button class="btn ghost" data-act="template">📋 نسخ نموذج الرسالة للمقاولين</button>
-    </div>`, 'wide');
-  const ta = $('#raw');
-  ta.addEventListener('paste', () => setTimeout(() => ta.value.trim() && doParse(), 30));
-  setTimeout(() => ta.focus(), 50);
-}
-function openEdit(cid) {
-  if (readOnly()) return toast('الشفت مغلق. أعد فتحه أولًا.');
-  const r = S.reports.get(cid);
-  E = { cid, step: 'review', dirty: false, raw: r.raw || '', parsed: null,
-    safety: structuredClone(r.safety), materials: structuredClone(r.materials), notes: r.notes || '',
-    files: (S.files.get(cid) || []).slice(), newFiles: [], removed: [], prev: r, unmatched: [], detect: null };
-  renderReview();
-}
-function doParse() {
-  const raw = $('#raw').value;
-  if (!raw.trim()) return toast('الصق نص التقرير أولًا.');
-  const p = Core.parseReport(raw, { shifts: S.settings.shifts });
-  if (p.matchedCount === 0 && !Object.values(p.materials).some(m => m.line)) return toast('ما قدرت أتعرف على أي عنصر في النص. تأكد إنه تقرير المقاول، أو استخدم الإدخال اليدوي.');
-  let cid = E.cid, warn = null;
-  if (cid && p.contractor.id && p.contractor.id !== cid) warn = `الاسم في الرسالة "${cName(p.contractor.id)}" يختلف عن البطاقة المختارة "${cName(cid)}".`;
-  if (!cid) cid = p.contractor.id;
-  const prev = cid ? S.reports.get(cid) : null;
-  E = { cid, step: 'review', dirty: true, raw, parsed: p, safety: p.safety, materials: p.materials, notes: p.notes,
-    files: cid ? (S.files.get(cid) || []).slice() : [], newFiles: [], removed: [], prev, unmatched: p.unmatched, detect: p.contractor, warn,
-    dateWarn: p.date && p.date !== S.date ? `تاريخ الرسالة ${p.date} يختلف عن تاريخ الشفت ${S.date}.` : null,
-    shiftWarn: p.shift && p.shift !== S.shift ? `الشفت في الرسالة "${p.shift}" يختلف عن الشفت المفتوح "${S.shift}".` : null };
-  renderReview();
-}
-function manualEntry() {
-  const safety = {}, materials = {};
-  SAFETY_ITEMS.forEach(i => safety[i.id] = { ok: false, reason: 'manual', line: null, review: false });
-  MATERIALS.forEach(m => materials[m.id] = { available: false, value: null, reason: 'manual', line: null });
-  const cid = E.cid;
-  E = { cid, step: 'review', dirty: true, raw: '', safety, materials, notes: '', files: cid ? (S.files.get(cid) || []).slice() : [], newFiles: [], removed: [], prev: cid ? S.reports.get(cid) : null, unmatched: [], manual: true };
-  renderReview();
-}
-function draftReport() { return { safety: E.safety, materials: E.materials }; }
-function renderReview() {
-  const missing = SAFETY_ITEMS.filter(i => !E.safety[i.id].ok);
-  const review = SAFETY_ITEMS.filter(i => E.safety[i.id].review);
-  const photos = E.files.length + E.newFiles.length;
-  const st = E.cid ? Core.reportStatus(draftReport(), photos, S.settings) : null;
-  const reasons = Core.incompleteReasons(draftReport(), photos, S.settings);
-  const diff = E.prev ? Core.diffReports(E.prev, draftReport()) : null;
-  const opts = `<option value="">— اختر المقاول —</option>` + CONTRACTORS.map(c => `<option value="${c.id}" ${c.id === E.cid ? 'selected' : ''}>${esc(c.name)}${S.reports.has(c.id) ? ' (له تقرير)' : ''}</option>`).join('');
-  const detectNote = E.detect ? ({ high: 'تم التعرف تلقائيًا', medium: 'تم التعرف من نص الرسالة — تأكد', ambiguous: 'ذُكر أكثر من مقاول — اختر الصحيح', none: 'ما لقيت اسم المقاول — اختره' }[E.detect.confidence]) : '';
-  const row = i => { const v = E.safety[i.id]; return `<li class="item ${v.ok ? 'ok' : 'bad'} ${v.review ? 'rev' : ''}">
-      <button type="button" class="tog" data-item="${i.id}" aria-pressed="${v.ok}"><span class="n">${i.no}</span><span class="t">${esc(i.label)}</span>
-      <span class="st">${v.ok ? '✅ متوفر' : `❌ ${v.reason ? esc(REASONS[v.reason]) : 'ناقص'}`}</span></button>
-      ${v.line ? `<small class="src">من الرسالة: ${esc(v.line)}</small>` : ''}</li>`; };
-  const groups = Object.entries(GROUPS).map(([g, name]) => `<h4 class="gh">${name}</h4><ul class="items">${SAFETY_ITEMS.filter(i => i.g === g).map(row).join('')}</ul>`).join('');
-  const mats = MATERIALS.map(m => { const v = E.materials[m.id]; return `<li class="mat ${v.available ? 'ok' : 'bad'}">
-      <span class="ml">${esc(m.label)}</span>
-      <span class="mctl">
-        <button type="button" class="seg sm ${v.available ? 'on' : ''}" data-mat="${m.id}" data-v="1">${m.type === 'presence' ? m.yes : 'متوفر'}</button>
-        <button type="button" class="seg sm ${!v.available ? 'on' : ''}" data-mat="${m.id}" data-v="0">${m.type === 'presence' ? m.no : 'غير متوفر'}</button>
-        ${m.type !== 'presence' ? `<input class="qty" type="number" min="0" step="any" inputmode="decimal" data-qty="${m.id}" value="${v.value ?? ''}" placeholder="${m.unit === 'م' ? 'الطول' : 'العدد'}" aria-label="${esc(m.label)} ${m.unit}"><span class="unit">${m.unit}</span>` : ''}
-      </span>
-      ${!v.available && v.reason && v.reason !== 'explicit_no' && v.reason !== 'manual' ? `<small class="src">${REASONS[v.reason]}</small>` : ''}</li>`; }).join('');
-  const thumbs = [...E.files.map(f => ({ f, old: true })), ...E.newFiles.map(f => ({ f, old: false }))].map(({ f }) => `<div class="thumb-e">
-      ${f.type.startsWith('image/') ? `<img data-fid="${f.id}" alt="">` : `<span class="fic">📄 ${esc(f.name)}</span>`}
-      <button type="button" class="rm" data-rmfile="${f.id}" aria-label="حذف المرفق">✕</button></div>`).join('');
-
-  openSheet(`
-    <h2 class="sh-title">مراجعة التقرير</h2>
-    <label class="field"><span>المقاول</span><select id="cid">${opts}</select>${detectNote ? `<small class="${E.detect.confidence === 'high' ? 'okc' : 'warnc'}">${detectNote}</small>` : ''}</label>
-    ${[E.warn, E.dateWarn, E.shiftWarn].filter(Boolean).map(w => `<p class="warn">⚠️ ${esc(w)}</p>`).join('')}
-    <div class="verdict v-${st || 'none'}">${st ? `${ICON[st]} سيُحفظ كـ <b>${LABEL[st]}</b>${reasons.length ? ` — ${reasons.map(esc).join(' • ')}` : ''}` : 'اختر المقاول لحساب الحالة'}</div>
-    ${diff && (diff.nowOk.length || diff.nowMissing.length) ? `<div class="diff">مقارنة بالتقرير السابق:
-      ${diff.nowOk.length ? `<p>✅ صار متوفر: ${diff.nowOk.map(i => esc(i.short)).join('، ')}</p>` : ''}
-      ${diff.nowMissing.length ? `<p>❌ صار ناقص: ${diff.nowMissing.map(i => esc(i.short)).join('، ')}</p>` : ''}</div>` : ''}
-
-    <section class="rv">
-      ${E.parsed && E.parsed.matchedCount < 30 ? `<p class="warn">⚠️ الرسالة فيها ${E.parsed.matchedCount} عنصر بس من 35. إذا المقاول أرسل القائمة كاملة، تأكد إنك لصقت الرسالة كلها.</p>` : ''}
-      ${review.length ? `<h3>⚠️ يحتاج مراجعة <span class="num">${review.length}</span></h3><p class="hint">الرقم في الرسالة يشير لعنصر والاسم لعنصر ثاني، أو العلامات متعارضة. تأكد واضغط العنصر لتغيير حالته.</p><ul class="items">${review.map(row).join('')}</ul>` : ''}
-      <h3 class="${review.length ? 'revh' : ''}">🦺 الناقص <span class="num">${missing.length}</span> من 35</h3>
-      ${missing.length ? `<ul class="items">${missing.map(row).join('')}</ul>` : `<p class="line ok">كل الاشتراطات متوفرة.</p>`}
-      <details class="all"><summary>كل العناصر الـ 35 (اضغط أي عنصر لتغيير حالته)</summary>
-        ${E.manual ? `<div class="row gap"><button class="btn sm ghost" data-act="allok">تأشير الكل متوفر</button></div>` : ''}${groups}</details>
-      ${E.unmatched && E.unmatched.length ? `<details class="all"><summary>أسطر ما فهمتها (${E.unmatched.length})</summary><ul class="um">${E.unmatched.map(l => `<li>${esc(l)}</li>`).join('')}</ul></details>` : ''}
-    </section>
-
-    <section class="rv"><h3>📦 المواد الحرجة</h3><ul class="mats-e">${mats}</ul></section>
-
-    <section class="rv"><h3>📝 الملاحظات</h3><textarea id="notes" rows="3" placeholder="ملاحظات على التقرير">${esc(E.notes)}</textarea></section>
-
-    <section class="rv"><h3>📎 الصور والملفات <span class="num">${photos}</span></h3>
-      <div class="thumbs-e">${thumbs}</div>
-      <label class="btn ghost file-btn">➕ إضافة صور أو ملفات<input id="fileIn" type="file" accept="image/*,application/pdf" multiple hidden></label>
-      <p class="hint">على الكمبيوتر تقدر تسحب الصور وتفلتها هنا. الصور تنضغط تلقائيًا.</p>
-    </section>
-
-    ${E.raw ? `<details class="all"><summary>نص الرسالة الأصلي</summary><pre class="rawv">${esc(E.raw)}</pre></details>` : ''}
-
-    <div class="sheet-actions">
-      <button class="btn ghost" data-act="back">رجوع</button>
-      <button class="btn primary" data-act="save">حفظ التقرير</button>
-    </div>`, 'wide');
-  hydrateThumbs($('#sheetBody'));
-}
-
-async function compressImage(file) {
-  if (!file.type.startsWith('image/') || file.type === 'image/gif') return file;
-  try {
-    const bmp = await createImageBitmap(file);
-    const max = 1600, k = Math.min(1, max / Math.max(bmp.width, bmp.height));
-    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.72));
-    return blob && blob.size < file.size ? new File([blob], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }) : file;
-  } catch { return file; }
-}
-async function addFiles(list) {
-  const arr = [...list].filter(f => f.type.startsWith('image/') || f.type === 'application/pdf');
-  if (!arr.length) return;
-  toast('جارِ تجهيز المرفقات…');
-  for (const f of arr) { const c = await compressImage(f); E.newFiles.push({ id: uid(), name: c.name, type: c.type, size: c.size, blob: c }); }
-  E.dirty = true; syncEditorInputs(); renderReview();
-}
-const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
-function syncEditorInputs() { const n = $('#notes'); if (n) E.notes = n.value; }
-
-async function saveReport() {
-  syncEditorInputs();
-  if (!E.cid) return toast('اختر المقاول قبل الحفظ.');
-  for (const m of MATERIALS) { const v = E.materials[m.id]; if (v.value != null && (isNaN(v.value) || v.value < 0)) return toast(`قيمة غير صحيحة: ${m.label}`); }
-  const id = `${sessionId()}|${E.cid}`;
-  const prev = S.reports.get(E.cid);
-  const clean = o => JSON.parse(JSON.stringify(o));
-  Object.values(E.safety).forEach(v => { v.review = false; });
-  const rec = { id, sessionId: sessionId(), contractorId: E.cid, safety: clean(E.safety), materials: clean(E.materials), notes: E.notes.trim(), raw: E.raw || (prev && prev.raw) || '',
-    revision: prev ? (prev.revision || 1) + 1 : 1, createdAt: prev ? prev.createdAt : Date.now(), updatedAt: Date.now(),
-    history: prev ? [...(prev.history || []).slice(-9), { at: prev.updatedAt, missing: Core.missingIds(prev), revision: prev.revision }] : [] };
-  const keepIds = new Set(E.files.map(f => f.id));
-  const oldFiles = S.files.get(E.cid) || [];
-  // if the chosen contractor changed from the one whose files were loaded, keep nothing old of the other
-  await tx(['sessions', 'reports', 'files'], 'readwrite', async t => {
-    await ensureSession(t);
-    t.objectStore('reports').put(rec);
-    const fs = t.objectStore('files');
-    for (const f of oldFiles) if (!keepIds.has(f.id)) fs.delete(f.id);
-    for (const f of E.newFiles) fs.put({ id: f.id, reportId: id, sessionId: sessionId(), contractorId: E.cid, name: f.name, type: f.type, size: f.size, blob: f.blob, createdAt: Date.now() });
-  });
-  const name = cName(E.cid);
-  E.dirty = false; closeSheet();
-  await loadSession(); notify();
-  toast(`تم حفظ تقرير ${name}`);
-  flash(null, name);
-}
-function flash(_, name) { const c = CONTRACTORS.find(x => x.name === name); const el = c && $('#c-' + c.id); if (el) { el.classList.add('flash'); el.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); setTimeout(() => el.classList.remove('flash'), 2200); } }
-
-async function resetReport(cid) {
-  if (!confirm(`حذف تقرير ${cName(cid)} وإرجاعه إلى 🔄؟`)) return;
-  const id = `${sessionId()}|${cid}`;
-  await tx(['reports', 'files'], 'readwrite', t => { t.objectStore('reports').delete(id); (S.files.get(cid) || []).forEach(f => t.objectStore('files').delete(f.id)); });
-  await loadSession(); notify(); toast('تم حذف التقرير');
-}
-
-/* ---------- close / reopen ---------- */
-async function setSessionStatus(status) {
-  await tx(['sessions'], 'readwrite', async t => { const s = await ensureSession(t); s.status = status; s[status === 'closed' ? 'closedAt' : 'reopenedAt'] = Date.now(); t.objectStore('sessions').put(s); });
-  await loadSession(); notify();
-}
-
-/* ---------- WhatsApp summary ---------- */
-function summaryText() {
-  const by = st => CONTRACTORS.filter(c => statusOf(c.id) === st);
-  const L = ['📋 تقرير المقاولين اليومي', `📅 ${fmtDate(S.date)} — الشفت: ${S.shift}`, `✅ ${by('complete').length} | ❌ ${by('incomplete').length} | 🔄 ${by('pending').length}`, ''];
-  if (by('complete').length) L.push('✅ مكتمل:', by('complete').map(c => c.name).join('، '), '');
-  if (by('incomplete').length) {
-    L.push('❌ ناقص:');
-    for (const c of by('incomplete')) {
-      const r = S.reports.get(c.id), miss = SAFETY_ITEMS.filter(i => !r.safety[i.id].ok);
-      const parts = [];
-      if (miss.length) parts.push('سلامة: ' + miss.map(i => i.short).join('، '));
-      if (S.settings.requirePhoto && !photoCount(c.id)) parts.push('صور مفقودة');
-      if (S.settings.materialsAffectStatus) { const mm = MATERIALS.filter(m => !r.materials[m.id]?.available); if (mm.length) parts.push('مواد: ' + mm.map(m => m.label).join('، ')); }
-      L.push(`• ${c.name} — ${parts.join(' | ')}`);
+function msgHTML(m) {
+  const lines = m.raw.split('\n');
+  const long = lines.length > 5 || m.raw.length > 320;
+  let h = `<div class="me"><div class="bubble-me ${long ? 'clamp' : ''}">${esc(m.raw)}</div>${long ? `<button class="link sm" data-act="expand">عرض الرسالة كاملة</button>` : ''}<span class="t">${fmtTime(m.createdAt)}</span></div>`;
+  const reps = m.results.filter(r => r.type === 'report');
+  const compact = reps.length > 2;
+  h += `<div class="bot">`;
+  m.warnings.forEach(w => h += `<p class="warn">⚠️ ${esc(w)}</p>`);
+  if (compact) h += `<p class="bot-note">قرأت ${reps.length} مقاول من هذي الرسالة.</p>`;
+  m.results.forEach((r, i) => {
+    if (r.type === 'pending') h += `<p class="bot-mini">🔄 ${esc(cName(r.cid))} — بدون تقرير</p>`;
+    else if (r.type === 'empty') h += `<p class="bot-mini warnc">${r.cid ? esc(cName(r.cid)) + ': ' : ''}ما لقيت أي مادة أو اشتراط في الرسالة. تأكد إنك لصقت التقرير كامل.</p>`;
+    else if (r.type === 'unknown') h += unknownHTML(m, r, i);
+    else {
+      const cur = S.reports[r.cid];
+      if (!cur) h += `<p class="bot-mini muted">🗑 ${esc(cName(r.cid))} — حُذف تقريره</p>`;
+      else if (cur.messageId !== m.id || cur.revision !== r.revision) h += `<p class="bot-mini muted">↻ ${esc(cName(r.cid))} — انستبدل بتحديث أحدث</p>`;
+      else h += cardHTML(cur, compact);
     }
-    L.push('');
-  }
-  if (by('pending').length) L.push('🔄 غير متجاوب:', by('pending').map(c => c.name).join('، '), '');
-  const matLines = CONTRACTORS.filter(c => S.reports.has(c.id)).map(c => { const mm = MATERIALS.filter(m => !S.reports.get(c.id).materials[m.id]?.available); return mm.length ? `• ${c.name}: ${mm.map(m => m.label).join('، ')}` : null; }).filter(Boolean);
-  if (matLines.length) L.push('📦 مواد حرجة غير متوفرة:', ...matLines);
-  return L.join('\n').trim();
+  });
+  return h + `</div>`;
+}
+function unknownHTML(m, r, i) {
+  const ev1 = Core.evaluate(r.parsed, S.settings);
+  const opts = (r.candidates.length ? r.candidates : CONTRACTORS.map(c => c.id)).map(id => `<option value="${id}">${esc(cName(id))}</option>`).join('');
+  return `<div class="card ask"><p><b>ما عرفت مين المقاول.</b> ${r.candidates.length ? 'ذُكر أكثر من اسم، اختر الصحيح:' : 'اختره من القائمة:'}</p>
+    <p class="line-prev">${esc(Core.summaryLine('؟', ev1))}</p>
+    <div class="row"><select class="sel" id="ask-${m.id}-${i}"><option value="">— اختر —</option>${opts}</select>
+    <button class="btn sm primary" data-act="resolve" data-msg="${m.id}" data-idx="${i}">اعتماد</button></div></div>`;
+}
+function matRow(m, v, required) {
+  const st = Core.matState(v);
+  const icon = st === 'ok' ? '✅' : st === 'none' ? (required ? '❌' : '➖') : '❌';
+  let d;
+  if (st === 'ok' || st === 'nophoto' || st === 'flagged') {
+    d = v.value != null ? (m.type === 'quantity' ? `عدد ${Core.fmtN(v.value)}` : m.type === 'length' ? `بطول ${Core.fmtN(v.value)} متر` : 'موجود') : (m.type === 'presence' ? 'موجود' : 'متوفر');
+    if (st === 'nophoto') d += ' — لا يوجد صورة';
+    if (st === 'flagged') d += ' — عليه ❌';
+  } else d = MAT_STATE_LABEL[st];
+  return `<tr class="st-${st} ${st === 'none' && !required ? 'dim' : ''}"><td class="ic">${icon}</td><th scope="row">${esc(m.short)}</th><td class="dv">${esc(d)}</td></tr>`;
+}
+function cardHTML(r, compact) {
+  const e = Core.evaluate(r, S.settings), name = cName(r.contractorId);
+  const line = Core.summaryLine(name, e);
+  const miss = Core.missingIds(r).map(id => SAFETY_ITEMS.find(i => i.id === id));
+  const review = r.checklist ? SAFETY_ITEMS.filter(i => r.safety[i.id].review) : [];
+  const safety = !r.checklist
+    ? `<p class="sf muted">🦺 قائمة الاشتراطات: ما كانت في الرسالة</p>`
+    : miss.length === 0 ? `<p class="sf ok">🦺 الاشتراطات: مكتملة <b>35/35</b></p>`
+    : `<p class="sf bad">🦺 الاشتراطات: ناقص <b>${miss.length}</b> من 35</p><ul class="chips">${miss.map(i => `<li class="chip"><b>${i.no}</b> ${esc(i.short)}${['unmarked', 'not_found', 'conflict'].includes(r.safety[i.id].reason) ? `<small>(${REASONS[r.safety[i.id].reason]})</small>` : ''}</li>`).join('')}</ul>`;
+  const body = `
+    <table class="mats">${MATERIALS.map(m => matRow(m, r.materials[m.id], S.settings.requiredMaterials.includes(m.id))).join('')}</table>
+    ${safety}
+    ${review.length ? `<p class="rev">⚠️ تأكد من: ${review.map(i => `${i.no} ${esc(i.short)}`).join('، ')}</p>` : ''}
+    ${r.issues.length ? `<ul class="issues">${r.issues.map(x => `<li>❌ ${esc(x)}</li>`).join('')}</ul>` : ''}
+    ${r.notes ? `<p class="notes">📝 ${esc(r.notes).replace(/\n/g, '<br>')}</p>` : ''}
+    ${r.unmatched.length ? `<details class="um"><summary>أسطر ما فهمتها (${r.unmatched.length})</summary><ul>${r.unmatched.map(l => `<li>${esc(l)}</li>`).join('')}</ul></details>` : ''}
+    ${r.history.length ? `<details class="um"><summary>قبل التحديث</summary><p class="line-prev">${esc(r.history[r.history.length - 1].line || '')}</p></details>` : ''}`;
+  return `<article class="card s-${e.status}" id="r-${r.contractorId}">
+    <header class="ch"><h3>${ICONS[e.status]} ${esc(name)}</h3><span class="meta">${r.revision > 1 ? `تحديث ${r.revision} · ` : ''}${fmtTime(r.updatedAt)}</span></header>
+    <div class="linebox"><p class="line">${esc(line)}</p><button class="icon-btn" data-act="copyLine" data-cid="${r.contractorId}" aria-label="نسخ السطر">📋</button></div>
+    ${compact ? `<details class="more"><summary>التفاصيل</summary>${body}</details>` : body}
+    <footer class="cf"><button class="btn sm ghost" data-act="edit" data-cid="${r.contractorId}">✏️ تعديل</button><button class="btn sm ghost danger" data-act="del" data-cid="${r.contractorId}" aria-label="حذف تقرير ${esc(name)}">🗑</button></footer>
+  </article>`;
+}
+
+/* ---------- sheet ---------- */
+const sheet = $('#sheet'); let editing = null;
+function openSheet(html, cls = '') { $('#sheetBody').innerHTML = html; sheet.className = 'sheet ' + cls; if (!sheet.open) sheet.showModal(); $('#sheetBody').scrollTop = 0; }
+function closeSheet() { if (sheet.open) sheet.close(); editing = null; }
+sheet.addEventListener('close', () => { editing = null; });
+
+function openCounter() {
+  const got = CONTRACTORS.filter(c => S.reports[c.id]), left = CONTRACTORS.filter(c => !S.reports[c.id]);
+  openSheet(`<h2 class="sh-title">المقاولين في هذي الوردية</h2>
+    ${got.length ? `<h3 class="sub">استلمت (${got.length})</h3><ul class="names">${got.map(c => `<li><button class="nm" data-jump="${c.id}">${ICONS[ev(c.id).status]} ${esc(c.name)}</button></li>`).join('')}</ul>` : ''}
+    <h3 class="sub">باقي 🔄 (${left.length})</h3>${left.length ? `<ul class="names">${left.map(c => `<li class="nm muted">${esc(c.name)}</li>`).join('')}</ul>` : '<p class="muted">كل المقاولين أرسلوا 👍</p>'}`);
 }
 function openSummary() {
-  const t = summaryText();
-  openSheet(`<h2 class="sh-title">📤 ملخص الشفت</h2><pre class="summary">${esc(t)}</pre>
-    <div class="sheet-actions"><button class="btn ghost" data-act="close">إغلاق</button>
-    <a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent(t)}" target="_blank" rel="noopener">فتح واتساب</a>
-    <button class="btn primary" data-act="copySummary">نسخ الملخص</button></div>`);
+  const t = Core.summaryText(S.date, S.shift, S.reports, S.settings);
+  openSheet(`<h2 class="sh-title">📤 الملخص</h2><pre class="summary">${esc(t)}</pre>
+    <div class="sheet-actions"><a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent(t)}" target="_blank" rel="noopener">فتح واتساب</a>
+    <button class="btn primary" data-act="copySummary">نسخ الملخص</button></div>`, 'wide');
 }
 
-/* ---------- Excel ---------- */
-function loadXLSX() {
-  if (window.XLSX) return Promise.resolve();
-  return new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = res; s.onerror = () => rej(new Error('تعذر تحميل مكتبة Excel. تأكد من الاتصال.')); document.head.appendChild(s); });
+/* ---------- edit ---------- */
+const MSTATES = [['ok', 'متوفر'], ['nophoto', 'بدون صورة'], ['missing', 'لا يوجد'], ['none', 'لم يُذكر']];
+function openEdit(cid) {
+  const r = S.reports[cid];
+  editing = { cid, checklist: !!r.checklist, safety: clean(r.safety || Object.fromEntries(SAFETY_ITEMS.map(i => [i.id, { ok: true, reason: null }]))), materials: clean(r.materials), issues: r.issues.slice(), notes: r.notes };
+  renderEdit();
 }
-async function exportExcel() {
-  try { await loadXLSX(); } catch (e) { return toast(e.message); }
-  const ordered = Core.sortContractors(CONTRACTORS, statusOf);
-  const sum = [['م', 'المقاول', 'الحالة', 'عدد النواقص', 'العناصر الناقصة', 'المرفقات', 'الملاحظات', 'آخر تحديث']];
-  ordered.forEach((c, i) => { const r = S.reports.get(c.id), st = statusOf(c.id);
-    const miss = r ? SAFETY_ITEMS.filter(x => !r.safety[x.id].ok) : [];
-    sum.push([i + 1, c.name, `${ICON[st]} ${LABEL[st]}`, r ? miss.length : '', miss.map(x => `${x.no}- ${x.short}`).join('، '), r ? photoCount(c.id) : '', r?.notes || '', r ? fmtTime(r.updatedAt) : '']); });
-  const mat = [['المقاول', ...SAFETY_ITEMS.map(i => `${i.no}. ${i.short}`)]];
-  ordered.forEach(c => { const r = S.reports.get(c.id); mat.push([c.name, ...SAFETY_ITEMS.map(i => !r ? '🔄' : r.safety[i.id].ok ? '✅' : '❌')]); });
-  const cm = [['المقاول', ...MATERIALS.map(m => m.label)]];
-  ordered.forEach(c => { const r = S.reports.get(c.id); cm.push([c.name, ...MATERIALS.map(m => !r ? '🔄' : Core.materialDisplay(m, r.materials[m.id]).text)]); });
-  const wb = XLSX.utils.book_new();
-  const add = (rows, name, widths) => { const ws = XLSX.utils.aoa_to_sheet(rows); ws['!cols'] = widths; XLSX.utils.book_append_sheet(wb, ws, name); };
-  add(sum, 'ملخص', [{ wch: 4 }, { wch: 18 }, { wch: 14 }, { wch: 10 }, { wch: 60 }, { wch: 9 }, { wch: 40 }, { wch: 11 }]);
-  add(mat, 'مصفوفة السلامة', [{ wch: 18 }, ...SAFETY_ITEMS.map(() => ({ wch: 12 }))]);
-  add(cm, 'المواد الحرجة', [{ wch: 18 }, ...MATERIALS.map(() => ({ wch: 16 }))]);
-  wb.Workbook = { Views: [{ RTL: true }] };
-  XLSX.writeFile(wb, `تقارير_المقاولين_${S.date}_${S.shift}.xlsx`);
+function renderEdit() {
+  const E = editing;
+  const mats = MATERIALS.map(m => { const v = E.materials[m.id], st = Core.matState(v);
+    return `<li class="me-row"><span class="ml">${esc(m.short)}</span>
+      <span class="segs">${MSTATES.filter(([k]) => !(m.type === 'presence' && k === 'nophoto')).map(([k, l]) => `<button type="button" class="seg sm ${st === k || (st === 'flagged' && k === 'ok') ? 'on' : ''} k-${k}" data-mst="${m.id}" data-k="${k}">${l}</button>`).join('')}</span>
+      ${m.type !== 'presence' ? `<input class="qty" type="number" inputmode="decimal" min="0" step="any" data-qty="${m.id}" value="${v && v.value != null ? v.value : ''}" placeholder="${m.type === 'quantity' ? 'العدد' : 'الطول'}" aria-label="${esc(m.short)}">` : ''}</li>`; }).join('');
+  const items = Object.entries(GROUPS).map(([g, gn]) => `<h4 class="gh">${gn}</h4><ul class="items">${SAFETY_ITEMS.filter(i => i.g === g).map(i => { const v = E.safety[i.id];
+    return `<li><button type="button" class="tog ${v.ok ? 'ok' : 'bad'}" data-item="${i.id}" aria-pressed="${v.ok}"><span class="n">${i.no}</span><span>${esc(i.label)}</span><span class="st">${v.ok ? '✅' : '❌'}</span></button></li>`; }).join('')}</ul>`).join('');
+  openSheet(`<h2 class="sh-title">✏️ تعديل ${esc(cName(E.cid))}</h2>
+    <h3 class="sub">المواد الحرجة</h3><ul class="me-list">${mats}</ul>
+    <h3 class="sub">الاشتراطات</h3>
+    <label class="check"><input type="checkbox" id="edCheck" ${E.checklist ? 'checked' : ''}> الرسالة فيها قائمة الـ 35</label>
+    ${E.checklist ? `<details class="um" open><summary>اضغط أي عنصر لتغيير حالته</summary>${items}</details>` : ''}
+    <h3 class="sub">ملاحظات النقص (كل سطر = ❌ مستقل)</h3>
+    <textarea id="edIssues" rows="3" placeholder="مثال: الكليشة & الملف">${esc(E.issues.join('\n'))}</textarea>
+    <h3 class="sub">ملاحظات عامة</h3><textarea id="edNotes" rows="2">${esc(E.notes)}</textarea>
+    <div class="sheet-actions"><button class="btn ghost" data-act="close">إلغاء</button><button class="btn primary" data-act="saveEdit">حفظ</button></div>`, 'wide');
+}
+function syncEdit() { if (!editing) return; const a = $('#edIssues'), b = $('#edNotes'); if (a) editing.issues = a.value.split('\n').map(x => x.trim()).filter(Boolean); if (b) editing.notes = b.value.trim(); }
+async function saveEdit() {
+  syncEdit(); const E = editing, prev = S.reports[E.cid];
+  const parsed = { checklist: E.checklist, safety: E.checklist ? E.safety : null, materials: E.materials, issues: E.issues, notes: E.notes, unmatched: prev.unmatched };
+  const rec = reportRecord(E.cid, parsed, prev.messageId, prev);
+  // keep the card attached to its original message: update that message's revision pointer
+  const msg = S.messages.find(m => m.id === prev.messageId);
+  if (msg) msg.results.forEach(x => { if (x.type === 'report' && x.cid === E.cid) x.revision = rec.revision; });
+  await tx(['reports', 'messages'], 'readwrite', t => { t.objectStore('reports').put(rec); if (msg) t.objectStore('messages').put(msg); });
+  closeSheet(); await load(false); notify(); toast(`تم حفظ ${cName(rec.contractorId)}`);
+  const el = $('#r-' + rec.contractorId); if (el) { el.scrollIntoView({ block: 'center' }); flash(el); }
 }
 
-/* ---------- archive ---------- */
+/* ---------- archive / settings / backup ---------- */
 async function openArchive() {
-  const sessions = (await getAll('sessions')).sort((a, b) => b.date.localeCompare(a.date) || (b.createdAt - a.createdAt));
-  const reps = await getAll('reports');
-  const files = await getAll('files');
-  const fc = {}; files.forEach(f => { const k = f.sessionId + '|' + f.contractorId; fc[k] = (fc[k] || 0) + 1; });
-  const rows = sessions.map(s => {
-    const rs = reps.filter(r => r.sessionId === s.id);
-    const c = { complete: 0, incomplete: 0 };
-    rs.forEach(r => c[Core.reportStatus(r, fc[s.id + '|' + r.contractorId] || 0, S.settings)]++);
-    const pending = CONTRACTORS.length - rs.length;
-    return `<li><button class="arow" data-open="${esc(s.id)}"><span class="ad">${fmtDate(s.date)} — ${esc(s.shift)}</span>
-      <span class="ac">✅ ${c.complete} · ❌ ${c.incomplete} · 🔄 ${pending}</span><span class="as">${s.status === 'closed' ? '🔒 مغلق' : 'مفتوح'}</span></button></li>`;
-  }).join('');
-  openSheet(`<h2 class="sh-title">🗂 الأرشيف</h2>${rows ? `<ul class="archive">${rows}</ul>` : `<p class="empty">ما فيه شفتات محفوظة للحين. أول تقرير تحفظه يفتح الشفت ويظهر هنا.</p>`}
-    <div class="sheet-actions"><button class="btn ghost" data-act="close">إغلاق</button></div>`);
+  const [ss, reps] = await Promise.all([getAll('sessions'), getAll('reports')]);
+  ss.sort((a, b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt);
+  const rows = ss.map(s => { const rs = reps.filter(r => r.sessionId === s.id); const bad = rs.filter(r => Core.evaluate(r, S.settings).status === 'incomplete').length;
+    return `<li><button class="arow" data-open="${esc(s.id)}"><span class="ad">${dayName(s.date)} ${Core.fmtDMY(s.date)} — ${esc(s.shift)}</span><span class="ac">✅ ${rs.length - bad} · ❌ ${bad} · 🔄 ${CONTRACTORS.length - rs.length}</span></button></li>`; }).join('');
+  openSheet(`<h2 class="sh-title">🗂 الأرشيف</h2>${rows ? `<ul class="archive">${rows}</ul>` : `<p class="muted">ما فيه ورديات محفوظة للحين.</p>`}`);
 }
-
-/* ---------- settings / backup ---------- */
 function openSettings() {
   const s = S.settings;
   openSheet(`<h2 class="sh-title">⚙️ الإعدادات</h2>
-    <label class="check"><input type="checkbox" id="setPhoto" ${s.requirePhoto ? 'checked' : ''}> التقرير بدون صور أو ملفات يُعتبر ❌ ناقص</label>
-    <label class="check"><input type="checkbox" id="setMat" ${s.materialsAffectStatus ? 'checked' : ''}> نقص أي مادة حرجة يجعل التقرير ❌ ناقص</label>
-    <label class="field"><span>الشفتات (افصل بفاصلة)</span><input id="setShifts" value="${esc(s.shifts.join('، '))}"></label>
-    <h3 class="sub">النسخ الاحتياطي</h3>
-    <p class="hint">البيانات محفوظة داخل هذا المتصفح فقط. خذ نسخة احتياطية بشكل دوري، وتقدر تنقلها لجهاز ثاني.</p>
-    <div class="row gap"><button class="btn ghost" data-act="backup">⬇️ تنزيل نسخة احتياطية</button>
-    <label class="btn ghost file-btn">⬆️ استرجاع نسخة<input id="restoreIn" type="file" accept="application/json,.json" hidden></label></div>
-    <div class="sheet-actions"><button class="btn ghost" data-act="close">إلغاء</button><button class="btn primary" data-act="saveSettings">حفظ الإعدادات</button></div>`);
+    <label class="field"><span>الورديات (افصل بفاصلة)</span><input id="setShifts" value="${esc(s.shifts.join('، '))}"></label>
+    <h3 class="sub">المواد اللي لازم تنذكر (إذا ما انذكرت تصير ❌)</h3>
+    ${MATERIALS.map(m => `<label class="check"><input type="checkbox" class="reqm" value="${m.id}" ${s.requiredMaterials.includes(m.id) ? 'checked' : ''}> ${esc(m.label)}</label>`).join('')}
+    <label class="check"><input type="checkbox" id="setChecklist" ${s.requireChecklist ? 'checked' : ''}> إذا الرسالة ما فيها قائمة الـ 35 يصير المقاول ❌</label>
+    <h3 class="sub">نموذج الرسالة</h3><button class="btn ghost" data-act="template">📋 نسخ نموذج الرسالة للمقاولين</button>
+    <h3 class="sub">النسخ الاحتياطي</h3><p class="muted sm">البيانات محفوظة في هذا المتصفح فقط.</p>
+    <div class="row"><button class="btn ghost" data-act="backup">⬇️ تنزيل نسخة</button><label class="btn ghost">⬆️ استرجاع<input id="restoreIn" type="file" accept=".json,application/json" hidden></label></div>
+    <h3 class="sub">هذي الوردية</h3><button class="btn ghost danger" data-act="clearSession">مسح محادثة ${esc(S.shift)} ${Core.fmtDMY(S.date)}</button>
+    <div class="sheet-actions"><button class="btn ghost" data-act="close">إلغاء</button><button class="btn primary" data-act="saveSettings">حفظ</button></div>`);
 }
-const blobToDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
 async function backup() {
-  toast('جارِ تجهيز النسخة…');
-  const files = await getAll('files');
-  const data = { app: 'contractors-daily-reports', version: 1, exportedAt: new Date().toISOString(), settings: S.settings,
-    sessions: await getAll('sessions'), reports: await getAll('reports'),
-    files: await Promise.all(files.map(async f => ({ ...f, blob: undefined, data: await blobToDataURL(f.blob) }))) };
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
-  a.download = `نسخة_تقارير_المقاولين_${today()}.json`; a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  const data = { app: 'contractors-chat', version: 1, exportedAt: new Date().toISOString(), settings: S.settings, sessions: await getAll('sessions'), reports: await getAll('reports'), messages: await getAll('messages') };
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
+  a.download = `نسخة_تقارير_المقاولين_${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
-async function restore(file) {
-  let data; try { data = JSON.parse(await file.text()); } catch { return toast('الملف غير صالح.'); }
-  if (data.app !== 'contractors-daily-reports') return toast('هذا الملف مو نسخة من هذا التطبيق.');
-  if (!confirm(`استرجاع ${data.sessions.length} شفت و${data.reports.length} تقرير؟ السجلات المتطابقة بتُستبدل.`)) return;
-  const files = await Promise.all(data.files.map(async f => ({ ...f, data: undefined, blob: await (await fetch(f.data)).blob() })));
-  await tx(['sessions', 'reports', 'files', 'meta'], 'readwrite', t => {
-    data.sessions.forEach(x => t.objectStore('sessions').put(x));
-    data.reports.forEach(x => t.objectStore('reports').put(x));
-    files.forEach(x => t.objectStore('files').put(x));
-    if (data.settings) t.objectStore('meta').put({ key: 'settings', value: data.settings });
+async function restore(f) {
+  let d; try { d = JSON.parse(await f.text()); } catch { return toast('الملف غير صالح.'); }
+  if (d.app !== 'contractors-chat') return toast('هذا الملف مو نسخة من هذا التطبيق.');
+  if (!confirm(`استرجاع ${d.sessions.length} وردية؟ المتطابق بيُستبدل.`)) return;
+  await tx(['sessions', 'reports', 'messages', 'meta'], 'readwrite', t => { d.sessions.forEach(x => t.objectStore('sessions').put(x)); d.reports.forEach(x => t.objectStore('reports').put(x)); d.messages.forEach(x => t.objectStore('messages').put(x)); if (d.settings) t.objectStore('meta').put({ key: 'settings', value: d.settings }); });
+  await loadSettings(); closeSheet(); await load(); toast('تم الاسترجاع');
+}
+async function clearSession() {
+  if (!confirm('مسح كل رسائل وتقارير هذي الوردية؟ ما تقدر ترجعها إلا من نسخة احتياطية.')) return;
+  await tx(['sessions', 'reports', 'messages'], 'readwrite', t => {
+    t.objectStore('sessions').delete(sid());
+    Object.values(S.reports).forEach(r => t.objectStore('reports').delete(r.id));
+    S.messages.forEach(m => t.objectStore('messages').delete(m.id));
   });
-  await loadSettings(); closeSheet(); await loadSession(); notify(); toast('تم الاسترجاع');
+  closeSheet(); await load(); notify(); toast('تم المسح');
 }
 
-/* ---------- viewer ---------- */
-function viewFile(id) {
-  const f = allFiles().find(x => x.id === id); if (!f) return;
-  if (!f.type.startsWith('image/')) { window.open(fileURL(f), '_blank'); return; }
-  openSheet(`<figure class="viewer"><img src="${fileURL(f)}" alt="${esc(f.name)}"><figcaption>${esc(cName(f.contractorId))} — ${esc(f.name)}</figcaption></figure>
-    <div class="sheet-actions"><button class="btn ghost" data-act="close">إغلاق</button></div>`, 'wide');
-}
-
-/* ---------- toast ---------- */
-let tt;
-function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); }
-async function copy(text, done) { try { await navigator.clipboard.writeText(text); toast(done); } catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); toast(done); } }
+/* ---------- helpers ---------- */
+let tt; function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2400); }
+async function copy(text, done) { try { await navigator.clipboard.writeText(text); } catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); } toast(done); }
+function flash(el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+function autoGrow() { const c = $('#compose'); c.style.height = 'auto'; c.style.height = Math.min(c.scrollHeight, 160) + 'px'; $('#sendBtn').disabled = !c.value.trim(); }
 
 /* ---------- events ---------- */
 document.addEventListener('click', async e => {
-  const b = e.target.closest('button, [data-open]'); if (!b) return;
+  const b = e.target.closest('button'); if (!b) return;
   const d = b.dataset;
-  if (d.shift) { S.shift = d.shift; localStorage.setItem('cdr-shift', S.shift); return loadSession(); }
-  if (d.filter) { S.filter = d.filter; return render(); }
-  if (d.jump) { S.filter = 'all'; render(); const el = $('#c-' + d.jump); if (el) { el.scrollIntoView({ block: 'center' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1800); } return; }
-  if (d.view) return viewFile(d.view);
-  if (d.open) { const s = await getOne('sessions', d.open); closeSheet(); S.date = s.date; S.shift = s.shift; if (!S.settings.shifts.includes(s.shift)) S.settings.shifts.push(s.shift); return loadSession(); }
-  if (d.item && E) { const v = E.safety[d.item]; syncEditorInputs(); E.safety[d.item] = { ...v, ok: !v.ok, reason: v.ok ? 'manual' : null, review: false }; E.dirty = true; const open = [...document.querySelectorAll('#sheetBody details')].map(x => x.open); const y = $('#sheetBody').scrollTop; renderReview(); document.querySelectorAll('#sheetBody details').forEach((x, i) => x.open = !!open[i]); $('#sheetBody').scrollTop = y; return; }
-  if (d.mat && E) { syncEditorInputs(); const m = E.materials[d.mat]; const on = d.v === '1'; E.materials[d.mat] = { ...m, available: on, value: on ? m.value : null, reason: on ? null : 'manual' }; E.dirty = true; const y = $('#sheetBody').scrollTop; renderReview(); $('#sheetBody').scrollTop = y; return; }
-  if (d.rmfile && E) { syncEditorInputs(); E.files = E.files.filter(f => f.id !== d.rmfile); E.newFiles = E.newFiles.filter(f => f.id !== d.rmfile); E.dirty = true; renderReview(); return; }
+  if (d.shift) { S.shift = d.shift; localStorage.setItem('cc-shift', S.shift); return load(); }
+  if (d.jump) { closeSheet(); const el = $('#r-' + d.jump); if (el) { el.scrollIntoView({ block: 'center' }); flash(el); } else toast('بطاقته انستبدلت، شف آخر تحديث له'); return; }
+  if (d.open) { const s = await getOne('sessions', d.open); closeSheet(); S.date = s.date; S.shift = s.shift; if (!S.settings.shifts.includes(s.shift)) S.settings.shifts.push(s.shift); return load(); }
+  if (d.item && editing) { syncEdit(); const v = editing.safety[d.item]; editing.safety[d.item] = { ...v, ok: !v.ok, reason: v.ok ? 'manual' : null, review: false }; const y = $('#sheetBody').scrollTop; renderEdit(); $('#sheetBody').scrollTop = y; return; }
+  if (d.mst && editing) {
+    syncEdit(); const m = editing.materials[d.mst] || { value: null };
+    const k = d.k, map = { ok: { mentioned: true, available: true, photo: null, flagged: false }, nophoto: { mentioned: true, available: true, photo: false, flagged: false }, missing: { mentioned: true, available: false, photo: null, flagged: false }, none: { mentioned: false, available: false, photo: null, flagged: false } };
+    editing.materials[d.mst] = { ...m, ...map[k], value: (k === 'missing' || k === 'none') ? null : m.value };
+    const y = $('#sheetBody').scrollTop; renderEdit(); $('#sheetBody').scrollTop = y; return;
+  }
   switch (d.act) {
-    case 'paste': return openPaste(d.cid);
+    case 'send': { const c = $('#compose'); const v = c.value; c.value = ''; autoGrow(); return send(v); }
+    case 'expand': { const bb = b.previousElementSibling; bb.classList.toggle('clamp'); b.textContent = bb.classList.contains('clamp') ? 'عرض الرسالة كاملة' : 'إخفاء'; return; }
+    case 'resolve': { const sel = $(`#ask-${d.msg}-${d.idx}`); if (!sel.value) return toast('اختر المقاول'); return resolveUnknown(d.msg, +d.idx, sel.value); }
+    case 'copyLine': return copy(Core.summaryLine(cName(d.cid), ev(d.cid)), 'تم نسخ السطر');
     case 'edit': return openEdit(d.cid);
-    case 'reset': return resetReport(d.cid);
-    case 'parse': return doParse();
-    case 'manual': return manualEntry();
-    case 'allok': syncEditorInputs(); SAFETY_ITEMS.forEach(i => E.safety[i.id] = { ok: true, reason: null, line: null }); return renderReview();
-    case 'template': return copy(Core.templateText(S.settings.shifts), 'تم نسخ النموذج. أرسله للمقاولين مرة وحدة.');
-    case 'back': { if (E && E.dirty && !confirm('بتفقد التعديلات. متأكد؟')) return; if (E && E.parsed) { const raw = E.raw, cid = E.cid; openPaste(cid); $('#raw').value = raw; return; } return closeSheet(); }
-    case 'dismiss': if (E && E.dirty && !confirm('في تعديلات ما انحفظت. تبي تطلع بدون حفظ؟')) return; return closeSheet();
-    case 'save': return saveReport();
-    case 'close': return closeSheet();
+    case 'del': return deleteReport(d.cid);
+    case 'saveEdit': return saveEdit();
     case 'summary': return openSummary();
-    case 'copySummary': return copy(summaryText(), 'تم نسخ الملخص');
-    case 'excel': return exportExcel();
+    case 'copySummary': return copy(Core.summaryText(S.date, S.shift, S.reports, S.settings), 'تم نسخ الملخص');
+    case 'counter': return openCounter();
     case 'archive': return openArchive();
     case 'settings': return openSettings();
+    case 'template': return copy(Core.templateText(), 'تم نسخ النموذج');
     case 'backup': return backup();
-    case 'closeShift': if (confirm(`إغلاق شفت ${S.shift} ليوم ${fmtDate(S.date)}؟ يصير للقراءة فقط.`)) { await setSessionStatus('closed'); toast('تم إغلاق الشفت'); } return;
-    case 'reopen': if (confirm('إعادة فتح الشفت للتعديل؟')) { await setSessionStatus('open'); toast('تم فتح الشفت'); } return;
+    case 'clearSession': return clearSession();
+    case 'close': return closeSheet();
     case 'saveSettings': {
       const shifts = $('#setShifts').value.split(/[،,]/).map(x => x.trim()).filter(Boolean);
-      if (!shifts.length) return toast('لازم شفت واحد على الأقل.');
-      S.settings = { requirePhoto: $('#setPhoto').checked, materialsAffectStatus: $('#setMat').checked, shifts };
+      if (!shifts.length) return toast('لازم وردية وحدة على الأقل.');
+      S.settings = { shifts, requiredMaterials: [...document.querySelectorAll('.reqm:checked')].map(x => x.value), requireChecklist: $('#setChecklist').checked };
       if (!shifts.includes(S.shift)) S.shift = shifts[0];
-      await saveSettings(); closeSheet(); await loadSession(); toast('تم حفظ الإعدادات'); return;
+      await saveSettings(); closeSheet(); await load(false); return toast('تم حفظ الإعدادات');
     }
-    case 'pasteAny': return openPaste(null);
   }
 });
 document.addEventListener('change', e => {
-  if (e.target.id === 'date') { if (e.target.value) { S.date = e.target.value; loadSession(); } }
-  if (e.target.id === 'cid' && E) { syncEditorInputs(); const was = E.cid; E.cid = e.target.value || null; if (E.cid !== was) { E.files = E.cid ? (S.files.get(E.cid) || []).slice() : []; E.prev = E.cid ? S.reports.get(E.cid) : null; E.warn = null; } E.dirty = true; renderReview(); }
-  if (e.target.id === 'fileIn' && E) addFiles(e.target.files);
+  if (e.target.id === 'date' && e.target.value) { S.date = e.target.value; load(); }
+  if (e.target.id === 'edCheck' && editing) { syncEdit(); editing.checklist = e.target.checked; renderEdit(); }
   if (e.target.id === 'restoreIn') restore(e.target.files[0]);
 });
 document.addEventListener('input', e => {
-  if (e.target.id === 'search') { S.search = e.target.value; render(); }
-  if (e.target.dataset.qty && E) {
-    const id = e.target.dataset.qty, raw = e.target.value, v = raw === '' ? null : parseFloat(raw);
-    const m = E.materials[id];
-    E.materials[id] = { ...m, value: v, available: v != null && v > 0 ? true : (v === 0 ? false : m.available), reason: v != null && v > 0 ? null : m.reason };
-    E.dirty = true;
-    const li = e.target.closest('.mat'); li.classList.toggle('ok', E.materials[id].available); li.classList.toggle('bad', !E.materials[id].available);
-    li.querySelectorAll('.seg').forEach(s => s.classList.toggle('on', (s.dataset.v === '1') === E.materials[id].available));
+  if (e.target.id === 'compose') autoGrow();
+  if (e.target.dataset.qty && editing) {
+    const id = e.target.dataset.qty, v = e.target.value === '' ? null : parseFloat(e.target.value);
+    const m = editing.materials[id] || { mentioned: false, available: false, photo: null, flagged: false };
+    editing.materials[id] = { ...m, value: v, ...(v != null && v > 0 && !m.available ? { mentioned: true, available: true } : {}) };
   }
-  if (e.target.id === 'notes' && E) E.dirty = true;
 });
-sheet.addEventListener('dragover', e => { if (E && E.step === 'review') { e.preventDefault(); sheet.classList.add('drop'); } });
-sheet.addEventListener('dragleave', () => sheet.classList.remove('drop'));
-sheet.addEventListener('drop', e => { sheet.classList.remove('drop'); if (E && E.step === 'review') { e.preventDefault(); addFiles(e.dataTransfer.files); } });
-window.addEventListener('beforeunload', e => { if (E && E.dirty) { e.preventDefault(); e.returnValue = ''; } });
-document.addEventListener('keydown', e => {
-  if (e.key === '/' && !sheet.open && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') { e.preventDefault(); $('#search').focus(); }
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && E && E.step === 'review') { e.preventDefault(); saveReport(); }
-});
+const compose = $('#compose');
+compose.addEventListener('paste', () => { const wasEmpty = !compose.value.trim(); setTimeout(() => { autoGrow(); if (wasEmpty && compose.value.trim()) { const v = compose.value; compose.value = ''; autoGrow(); send(v); } }, 30); });
+compose.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('[data-act=send]').click(); } });
 
 /* ---------- boot ---------- */
-(async function boot() {
-  try { db = await openDB(); } catch { document.body.innerHTML = '<p class="empty">المتصفح منع التخزين المحلي. افتح الصفحة في متصفح عادي (مو وضع التصفح الخفي).</p>'; return; }
-  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+(async () => {
+  try { db = await openDB(); } catch { document.body.innerHTML = '<p style="padding:30px;text-align:center">المتصفح منع التخزين. افتح الصفحة في متصفح عادي (مو التصفح الخفي).</p>'; return; }
+  navigator.storage?.persist?.().catch(() => {});
   await loadSettings();
-  const saved = localStorage.getItem('cdr-shift');
-  const h = new Date().getHours();
-  S.shift = S.settings.shifts.includes(saved) ? saved : (S.settings.shifts[h >= 15 && S.settings.shifts.length > 1 ? 1 : 0]);
-  await loadSession();
+  const saved = localStorage.getItem('cc-shift'), h = new Date().getHours();
+  S.shift = S.settings.shifts.includes(saved) ? saved : S.settings.shifts[h >= 15 && S.settings.shifts.length > 1 ? 1 : 0];
+  await load(); autoGrow();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
 })();
